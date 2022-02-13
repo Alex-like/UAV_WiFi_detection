@@ -1,2 +1,2 @@
-# UAV_WiFi_detection
+# UAV WiFi detection
 Software for detecting UAV with WiFi control
