@@ -16,6 +16,7 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
     string path;
+    cout << "Введите путь до файла:\n";
     cin >> path;
     vector<LogFrame> frames;
     readFromFile(path, frames);
