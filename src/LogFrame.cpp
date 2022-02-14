@@ -8,6 +8,7 @@
 #include "LogFrame.hpp"
 #include <regex>
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -26,6 +27,12 @@ bool LogFrame::isCorrect() {
     return FCS;
 }
 
+string LogFrame::toString() {
+    stringstream s;
+    s << "Index=" << ind << " FCS=" << (isCorrect() ? "Success" : "Fail") << endl;
+    return s.str();
+}
+
 LogFrame parse(const vector<string> &lines) {
     // init
     float Offset_v = 0.0;
@@ -35,12 +42,12 @@ LogFrame parse(const vector<string> &lines) {
     
     // parse
     // regular expressions for parsing DataFrame
-    const regex regex_line1("^(\\d+)\\s+Offset=(\\d+\\.\\d+),BW=(\\w+),MCS=(.+),Size=(\\d+)$");
-    const regex regex_line2("^Frame=(\\d+)$");
-    const regex regex_line3("^FCS=Fail$");
+    const regex regex_line1("(\\d+)\\s+Offset=(\\d+\\.\\d+),BW=(\\w+),MCS=(.+),Size=(\\d+)");
+    const regex regex_line2("Frame=(\\d+)");
+    const regex regex_line3("FCS=Fail");
     
     smatch line1_groups;
-    if (regex_match(lines[0], line1_groups, regex_line1)) {
+    if (regex_search(lines[0], line1_groups, regex_line1)) {
         ind_v = stoi(line1_groups[1]);
         Offset_v = stof(line1_groups[2]);
         BW_v = line1_groups[3];
@@ -49,12 +56,12 @@ LogFrame parse(const vector<string> &lines) {
     }
     
     smatch line2_groups;
-    if (regex_match(lines[1], line2_groups, regex_line2)) {
+    if (regex_search(lines[1], line2_groups, regex_line2)) {
         Frame_v = line2_groups[1];
     }
     
     smatch line3_groups;
-    if (!regex_match(lines[2], line3_groups, regex_line3)) {
+    if (!regex_search(lines[2], line3_groups, regex_line3)) {
         FCS_v = true;
     }
     

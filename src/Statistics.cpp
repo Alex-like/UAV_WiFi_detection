@@ -31,6 +31,6 @@ Statistics::Statistics(const vector<LogFrame> &frames) {
 
 string Statistics::toString() {
     stringstream s;
-    s << "Whole frames' number: " << whole << " Correct frames: " << correct << "Incorrect frames: " << incorrect;
+    s << "Whole frames' number: " << whole << "\nCorrect frames: " << correct << "\nIncorrect frames: " << incorrect << "\nPercentage correct frames of the total: " << ((double)correct / (double)whole * 100.0) << endl;
     return s.str();
 }

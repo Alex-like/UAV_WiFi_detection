@@ -31,6 +31,8 @@ public:
     LogFrame(int ind_v, float Offset_v, string BW_v, string MCS_v, int Size_v, string Frame_v, string info_v, bool FCS_v);
     
     bool isCorrect();
+    
+    string toString();
 };
 
 LogFrame parse(const vector<string> &lines);

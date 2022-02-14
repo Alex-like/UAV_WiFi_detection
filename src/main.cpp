@@ -6,10 +6,24 @@
 //
 
 #include <iostream>
+#include <fstream>
+#include <regex>
 #include "LogFrame.hpp"
+#include "Statistics.hpp"
+#include "Utils.hpp"
+
+using namespace std;
 
 int main(int argc, const char * argv[]) {
-    LogFrame frame = parse({"0000000009    Offset=3.21745,BW=22MHz,MCS=1(802.11 legacy DBPSK 1mbps (long preamble)),Size=28", "Frame=80000000ffffffffffff8adc963b54408adc963b5440e06780a1a7080000000064001104000f536f6c6f4c696e6b5f334235343430010882848b960c1218240301080504000200000706555320010b1e2a010432043048606c30180100000fac020200000fac04000fac020100000fac020c002d1aad011bffff0000000000000000000001000000000000000000003d16080004000000000000000000000000000000000000007f080000000000000040dd180050f2020101000003a4660327a400004242886054320100dd18009cf404104a0001101044000102104900ca362c4a360120d5caf860", "FCS=Fail"});
-    cout << (frame.isCorrect() ? "Correct" : "Incorrect") << endl;
+    string path;
+    cin >> path;
+    vector<LogFrame> frames;
+    readFromFile(path, frames);
+    
+//    for (LogFrame frame : frames)
+//        cout << frame.toString();
+    
+    Statistics stat(frames);
+    cout << stat.toString() << endl;
     return 0;
 }
