@@ -1,0 +1,512 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7E71F0F427B9455C005F5E8C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E71F0F327B9455C005F5E8C /* main.cpp */; };
+		7E71F13027B95538005F5E8C /* LogFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E71F12E27B95538005F5E8C /* LogFrame.cpp */; };
+		7E71F13327B9CCE7005F5E8C /* Statistics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E71F13127B9CCE7005F5E8C /* Statistics.cpp */; };
+		7E71F13627BA4F9C005F5E8C /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E71F13427BA4F9C005F5E8C /* Utils.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7E71F0EE27B9455C005F5E8C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		7E71F0F027B9455C005F5E8C /* UAV_WiFi_detection */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UAV_WiFi_detection; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E71F0F327B9455C005F5E8C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		7E71F0FD27B94740005F5E8C /* 1630055580353.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1630055580353.jpg; sourceTree = "<group>"; };
+		7E71F0FE27B94740005F5E8C /* 1630055580345.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1630055580345.jpg; sourceTree = "<group>"; };
+		7E71F10027B94740005F5E8C /* frames.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = frames.pcap; sourceTree = "<group>"; };
+		7E71F10127B94740005F5E8C /* frames.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames.log; sourceTree = "<group>"; };
+		7E71F10327B94740005F5E8C /* frames.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = frames.pcap; sourceTree = "<group>"; };
+		7E71F10427B94740005F5E8C /* frames.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames.log; sourceTree = "<group>"; };
+		7E71F10627B94740005F5E8C /* 2021-07-21 17-21-59.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "2021-07-21 17-21-59.JPG"; sourceTree = "<group>"; };
+		7E71F10727B94740005F5E8C /* 2021-07-20 16-35-28.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "2021-07-20 16-35-28.JPG"; sourceTree = "<group>"; };
+		7E71F10827B94740005F5E8C /* 2021-07-20 16-35-03.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "2021-07-20 16-35-03.JPG"; sourceTree = "<group>"; };
+		7E71F10A27B94740005F5E8C /* frames.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = frames.pcap; sourceTree = "<group>"; };
+		7E71F10B27B94740005F5E8C /* frames.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames.log; sourceTree = "<group>"; };
+		7E71F10C27B94740005F5E8C /* 2021-07-20 16-35-35.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "2021-07-20 16-35-35.JPG"; sourceTree = "<group>"; };
+		7E71F10D27B94740005F5E8C /* 2021-07-21 17-21-50.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "2021-07-21 17-21-50.JPG"; sourceTree = "<group>"; };
+		7E71F10F27B94740005F5E8C /* 2021-07-20 15-49-03.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "2021-07-20 15-49-03.JPG"; sourceTree = "<group>"; };
+		7E71F11027B94740005F5E8C /* 2021-07-20 15-49-16.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "2021-07-20 15-49-16.JPG"; sourceTree = "<group>"; };
+		7E71F11227B94740005F5E8C /* frames.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = frames.pcap; sourceTree = "<group>"; };
+		7E71F11327B94740005F5E8C /* frames.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames.log; sourceTree = "<group>"; };
+		7E71F11527B94740005F5E8C /* frames.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = frames.pcap; sourceTree = "<group>"; };
+		7E71F11627B94740005F5E8C /* frames.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames.log; sourceTree = "<group>"; };
+		7E71F11727B94740005F5E8C /* 2021-07-20 15-49-31.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "2021-07-20 15-49-31.JPG"; sourceTree = "<group>"; };
+		7E71F11A27B94740005F5E8C /* frames.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = frames.pcap; sourceTree = "<group>"; };
+		7E71F11B27B94740005F5E8C /* frames.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames.log; sourceTree = "<group>"; };
+		7E71F11D27B94740005F5E8C /* frames.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = frames.pcap; sourceTree = "<group>"; };
+		7E71F11E27B94740005F5E8C /* frames.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames.log; sourceTree = "<group>"; };
+		7E71F12027B94740005F5E8C /* frames.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = frames.pcap; sourceTree = "<group>"; };
+		7E71F12127B94740005F5E8C /* frames.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames.log; sourceTree = "<group>"; };
+		7E71F12427B94740005F5E8C /* frames.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = frames.pcap; sourceTree = "<group>"; };
+		7E71F12527B94740005F5E8C /* frames.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames.log; sourceTree = "<group>"; };
+		7E71F12727B94740005F5E8C /* frames.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = frames.pcap; sourceTree = "<group>"; };
+		7E71F12827B94740005F5E8C /* frames.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames.log; sourceTree = "<group>"; };
+		7E71F12A27B94740005F5E8C /* Vega_2021-03-30_15-13-49-781_1_5785000000_10000000_11764706.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Vega_2021-03-30_15-13-49-781_1_5785000000_10000000_11764706.log"; sourceTree = "<group>"; };
+		7E71F12B27B94740005F5E8C /* Vega_2021-03-30_15-13-49-781_1_5785000000_10000000_11764706.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Vega_2021-03-30_15-13-49-781_1_5785000000_10000000_11764706.pcap"; sourceTree = "<group>"; };
+		7E71F12C27B94757005F5E8C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		7E71F12E27B95538005F5E8C /* LogFrame.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LogFrame.cpp; sourceTree = "<group>"; };
+		7E71F12F27B95538005F5E8C /* LogFrame.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = LogFrame.hpp; sourceTree = "<group>"; };
+		7E71F13127B9CCE7005F5E8C /* Statistics.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Statistics.cpp; sourceTree = "<group>"; };
+		7E71F13227B9CCE7005F5E8C /* Statistics.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Statistics.hpp; sourceTree = "<group>"; };
+		7E71F13427BA4F9C005F5E8C /* Utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Utils.cpp; sourceTree = "<group>"; };
+		7E71F13527BA4F9C005F5E8C /* Utils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Utils.hpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7E71F0ED27B9455C005F5E8C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7E71F0E727B9455C005F5E8C = {
+			isa = PBXGroup;
+			children = (
+				7E71F12C27B94757005F5E8C /* README.md */,
+				7E71F0FA27B94740005F5E8C /* data */,
+				7E71F0F227B9455C005F5E8C /* src */,
+				7E71F0F127B9455C005F5E8C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7E71F0F127B9455C005F5E8C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F0F027B9455C005F5E8C /* UAV_WiFi_detection */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7E71F0F227B9455C005F5E8C /* src */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F0F327B9455C005F5E8C /* main.cpp */,
+				7E71F12E27B95538005F5E8C /* LogFrame.cpp */,
+				7E71F12F27B95538005F5E8C /* LogFrame.hpp */,
+				7E71F13127B9CCE7005F5E8C /* Statistics.cpp */,
+				7E71F13227B9CCE7005F5E8C /* Statistics.hpp */,
+				7E71F13427BA4F9C005F5E8C /* Utils.cpp */,
+				7E71F13527BA4F9C005F5E8C /* Utils.hpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		7E71F0FA27B94740005F5E8C /* data */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F0FB27B94740005F5E8C /* drones */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
+		7E71F0FB27B94740005F5E8C /* drones */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F0FC27B94740005F5E8C /* skydio2 */,
+				7E71F10527B94740005F5E8C /* nelk_b6 */,
+				7E71F10E27B94740005F5E8C /* 3dr_solo */,
+				7E71F11827B94740005F5E8C /* fimi_x8_me_2020 */,
+				7E71F12227B94740005F5E8C /* parrot_bebop2 */,
+				7E71F12927B94740005F5E8C /* hubsan_zino_2 */,
+			);
+			path = drones;
+			sourceTree = "<group>";
+		};
+		7E71F0FC27B94740005F5E8C /* skydio2 */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F0FD27B94740005F5E8C /* 1630055580353.jpg */,
+				7E71F0FE27B94740005F5E8C /* 1630055580345.jpg */,
+				7E71F0FF27B94740005F5E8C /* 4 ВІЂ•в ® ѓЃб†§™† Ґ Ѓд®б• */,
+				7E71F10227B94740005F5E8C /* 3 ПЃ§™Ђоз•≠®• App, ™†Ђ®°аЃҐ™†, ѓЃѓлв™† ѓЃЂ•в† - Unsafe space */,
+			);
+			path = skydio2;
+			sourceTree = "<group>";
+		};
+		7E71F0FF27B94740005F5E8C /* 4 ВІЂ•в ® ѓЃб†§™† Ґ Ѓд®б• */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F10027B94740005F5E8C /* frames.pcap */,
+				7E71F10127B94740005F5E8C /* frames.log */,
+			);
+			path = "4 ВІЂ•в ® ѓЃб†§™† Ґ Ѓд®б•";
+			sourceTree = "<group>";
+		};
+		7E71F10227B94740005F5E8C /* 3 ПЃ§™Ђоз•≠®• App, ™†Ђ®°аЃҐ™†, ѓЃѓлв™† ѓЃЂ•в† - Unsafe space */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F10327B94740005F5E8C /* frames.pcap */,
+				7E71F10427B94740005F5E8C /* frames.log */,
+			);
+			path = "3 ПЃ§™Ђоз•≠®• App, ™†Ђ®°аЃҐ™†, ѓЃѓлв™† ѓЃЂ•в† - Unsafe space";
+			sourceTree = "<group>";
+		};
+		7E71F10527B94740005F5E8C /* nelk_b6 */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F10627B94740005F5E8C /* 2021-07-21 17-21-59.JPG */,
+				7E71F10727B94740005F5E8C /* 2021-07-20 16-35-28.JPG */,
+				7E71F10827B94740005F5E8C /* 2021-07-20 16-35-03.JPG */,
+				7E71F10927B94740005F5E8C /* NELK_B6_Downlink 5220.213483MHz 46625.000000KHz.pcm.log */,
+				7E71F10C27B94740005F5E8C /* 2021-07-20 16-35-35.JPG */,
+				7E71F10D27B94740005F5E8C /* 2021-07-21 17-21-50.JPG */,
+			);
+			path = nelk_b6;
+			sourceTree = "<group>";
+		};
+		7E71F10927B94740005F5E8C /* NELK_B6_Downlink 5220.213483MHz 46625.000000KHz.pcm.log */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F10A27B94740005F5E8C /* frames.pcap */,
+				7E71F10B27B94740005F5E8C /* frames.log */,
+			);
+			path = "NELK_B6_Downlink 5220.213483MHz 46625.000000KHz.pcm.log";
+			sourceTree = "<group>";
+		};
+		7E71F10E27B94740005F5E8C /* 3dr_solo */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F10F27B94740005F5E8C /* 2021-07-20 15-49-03.JPG */,
+				7E71F11027B94740005F5E8C /* 2021-07-20 15-49-16.JPG */,
+				7E71F11127B94740005F5E8C /* wifi-ofdm-20 */,
+				7E71F11427B94740005F5E8C /* dsss */,
+				7E71F11727B94740005F5E8C /* 2021-07-20 15-49-31.JPG */,
+			);
+			path = 3dr_solo;
+			sourceTree = "<group>";
+		};
+		7E71F11127B94740005F5E8C /* wifi-ofdm-20 */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F11227B94740005F5E8C /* frames.pcap */,
+				7E71F11327B94740005F5E8C /* frames.log */,
+			);
+			path = "wifi-ofdm-20";
+			sourceTree = "<group>";
+		};
+		7E71F11427B94740005F5E8C /* dsss */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F11527B94740005F5E8C /* frames.pcap */,
+				7E71F11627B94740005F5E8C /* frames.log */,
+			);
+			path = dsss;
+			sourceTree = "<group>";
+		};
+		7E71F11827B94740005F5E8C /* fimi_x8_me_2020 */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F11927B94740005F5E8C /* 2wifi_fc_5825000000_fs_12000000.pcm.result */,
+				7E71F11C27B94740005F5E8C /* 1wifi_fc_5825000000_fs_12000000.pcm.result */,
+				7E71F11F27B94740005F5E8C /* wifi_fc_5825000000_fs_12000000.pcm.result */,
+			);
+			path = fimi_x8_me_2020;
+			sourceTree = "<group>";
+		};
+		7E71F11927B94740005F5E8C /* 2wifi_fc_5825000000_fs_12000000.pcm.result */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F11A27B94740005F5E8C /* frames.pcap */,
+				7E71F11B27B94740005F5E8C /* frames.log */,
+			);
+			path = 2wifi_fc_5825000000_fs_12000000.pcm.result;
+			sourceTree = "<group>";
+		};
+		7E71F11C27B94740005F5E8C /* 1wifi_fc_5825000000_fs_12000000.pcm.result */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F11D27B94740005F5E8C /* frames.pcap */,
+				7E71F11E27B94740005F5E8C /* frames.log */,
+			);
+			path = 1wifi_fc_5825000000_fs_12000000.pcm.result;
+			sourceTree = "<group>";
+		};
+		7E71F11F27B94740005F5E8C /* wifi_fc_5825000000_fs_12000000.pcm.result */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F12027B94740005F5E8C /* frames.pcap */,
+				7E71F12127B94740005F5E8C /* frames.log */,
+			);
+			path = wifi_fc_5825000000_fs_12000000.pcm.result;
+			sourceTree = "<group>";
+		};
+		7E71F12227B94740005F5E8C /* parrot_bebop2 */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F12327B94740005F5E8C /* on_the_ground_gps - ofdm-20 */,
+				7E71F12627B94740005F5E8C /* on_the_ground_gps - dsss */,
+			);
+			path = parrot_bebop2;
+			sourceTree = "<group>";
+		};
+		7E71F12327B94740005F5E8C /* on_the_ground_gps - ofdm-20 */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F12427B94740005F5E8C /* frames.pcap */,
+				7E71F12527B94740005F5E8C /* frames.log */,
+			);
+			path = "on_the_ground_gps - ofdm-20";
+			sourceTree = "<group>";
+		};
+		7E71F12627B94740005F5E8C /* on_the_ground_gps - dsss */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F12727B94740005F5E8C /* frames.pcap */,
+				7E71F12827B94740005F5E8C /* frames.log */,
+			);
+			path = "on_the_ground_gps - dsss";
+			sourceTree = "<group>";
+		};
+		7E71F12927B94740005F5E8C /* hubsan_zino_2 */ = {
+			isa = PBXGroup;
+			children = (
+				7E71F12A27B94740005F5E8C /* Vega_2021-03-30_15-13-49-781_1_5785000000_10000000_11764706.log */,
+				7E71F12B27B94740005F5E8C /* Vega_2021-03-30_15-13-49-781_1_5785000000_10000000_11764706.pcap */,
+			);
+			path = hubsan_zino_2;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7E71F0EF27B9455C005F5E8C /* UAV_WiFi_detection */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7E71F0F727B9455C005F5E8C /* Build configuration list for PBXNativeTarget "UAV_WiFi_detection" */;
+			buildPhases = (
+				7E71F0EC27B9455C005F5E8C /* Sources */,
+				7E71F0ED27B9455C005F5E8C /* Frameworks */,
+				7E71F0EE27B9455C005F5E8C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UAV_WiFi_detection;
+			productName = UAV_WiFi_detection;
+			productReference = 7E71F0F027B9455C005F5E8C /* UAV_WiFi_detection */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7E71F0E827B9455C005F5E8C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1320;
+				TargetAttributes = {
+					7E71F0EF27B9455C005F5E8C = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
+				};
+			};
+			buildConfigurationList = 7E71F0EB27B9455C005F5E8C /* Build configuration list for PBXProject "UAV_WiFi_detection" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 7E71F0E727B9455C005F5E8C;
+			productRefGroup = 7E71F0F127B9455C005F5E8C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7E71F0EF27B9455C005F5E8C /* UAV_WiFi_detection */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7E71F0EC27B9455C005F5E8C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E71F13327B9CCE7005F5E8C /* Statistics.cpp in Sources */,
+				7E71F13027B95538005F5E8C /* LogFrame.cpp in Sources */,
+				7E71F0F427B9455C005F5E8C /* main.cpp in Sources */,
+				7E71F13627BA4F9C005F5E8C /* Utils.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		7E71F0F527B9455C005F5E8C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		7E71F0F627B9455C005F5E8C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		7E71F0F827B9455C005F5E8C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = V5848D22XF;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		7E71F0F927B9455C005F5E8C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = V5848D22XF;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7E71F0EB27B9455C005F5E8C /* Build configuration list for PBXProject "UAV_WiFi_detection" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7E71F0F527B9455C005F5E8C /* Debug */,
+				7E71F0F627B9455C005F5E8C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7E71F0F727B9455C005F5E8C /* Build configuration list for PBXNativeTarget "UAV_WiFi_detection" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7E71F0F827B9455C005F5E8C /* Debug */,
+				7E71F0F927B9455C005F5E8C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7E71F0E827B9455C005F5E8C /* Project object */;
+}
