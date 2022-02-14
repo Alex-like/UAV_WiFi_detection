@@ -32,4 +32,10 @@
 *.app
 
 # xcode
-*.xcodeproj
+# *.xcodeproj
+
+# data
+/data
+
+# readme.md
+README.md
