@@ -11,6 +11,21 @@
 
 using namespace std;
 
+LogFrame::LogFrame(int ind_v, float Offset_v, string BW_v, string MCS_v, int Size_v, string Frame_v, string info_v, bool FCS_v) {
+    ind = ind_v;
+    Offset = Offset_v;
+    BW = BW_v;
+    MCS = MCS_v;
+    Size = Size_v;
+    Frame = Frame_v;
+    info = info_v;
+    FCS = FCS_v;
+}
+
+bool LogFrame::isCorrect() {
+    return FCS;
+}
+
 LogFrame parse(const vector<string> &lines) {
     // init
     float Offset_v = 0.0;
