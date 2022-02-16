@@ -11,6 +11,7 @@
 		7E71F13027B95538005F5E8C /* LogFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E71F12E27B95538005F5E8C /* LogFrame.cpp */; };
 		7E71F13327B9CCE7005F5E8C /* Statistics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E71F13127B9CCE7005F5E8C /* Statistics.cpp */; };
 		7E71F13627BA4F9C005F5E8C /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E71F13427BA4F9C005F5E8C /* Utils.cpp */; };
+		7E71F16D27BA76BD005F5E8C /* PCAPFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E71F16B27BA76BD005F5E8C /* PCAPFrame.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -68,6 +69,8 @@
 		7E71F16827BA57D0005F5E8C /* Vega_2021-03-30_15-13-49-781_1_5785000000_10000000_11764706.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Vega_2021-03-30_15-13-49-781_1_5785000000_10000000_11764706.log"; sourceTree = "<group>"; };
 		7E71F16927BA57D0005F5E8C /* Vega_2021-03-30_15-13-49-781_1_5785000000_10000000_11764706.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Vega_2021-03-30_15-13-49-781_1_5785000000_10000000_11764706.pcap"; sourceTree = "<group>"; };
 		7E71F16A27BA57D0005F5E8C /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = "<group>"; };
+		7E71F16B27BA76BD005F5E8C /* PCAPFrame.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PCAPFrame.cpp; sourceTree = "<group>"; };
+		7E71F16C27BA76BD005F5E8C /* PCAPFrame.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PCAPFrame.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +112,8 @@
 				7E71F13227B9CCE7005F5E8C /* Statistics.hpp */,
 				7E71F13427BA4F9C005F5E8C /* Utils.cpp */,
 				7E71F13527BA4F9C005F5E8C /* Utils.hpp */,
+				7E71F16B27BA76BD005F5E8C /* PCAPFrame.cpp */,
+				7E71F16C27BA76BD005F5E8C /* PCAPFrame.hpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -347,6 +352,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E71F13327B9CCE7005F5E8C /* Statistics.cpp in Sources */,
+				7E71F16D27BA76BD005F5E8C /* PCAPFrame.cpp in Sources */,
 				7E71F13027B95538005F5E8C /* LogFrame.cpp in Sources */,
 				7E71F0F427B9455C005F5E8C /* main.cpp in Sources */,
 				7E71F13627BA4F9C005F5E8C /* Utils.cpp in Sources */,
@@ -473,6 +479,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = V5848D22XF;
 				ENABLE_HARDENED_RUNTIME = YES;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -483,6 +490,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = V5848D22XF;
 				ENABLE_HARDENED_RUNTIME = YES;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
