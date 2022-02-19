@@ -12,7 +12,7 @@
 
 using namespace std;
 
-LogFrame::LogFrame(int ind_v, float Offset_v, string BW_v, string MCS_v, int Size_v, string Frame_v, string info_v, bool FCS_v) {
+LogFrame::LogFrame(int ind_v, float Offset_v, string BW_v, string MCS_v, int Size_v, string Frame_v, string info_v, bool FCS_v, u_int64_t TA_v, u_int64_t RA_v) {
     ind = ind_v;
     Offset = Offset_v;
     BW = BW_v;
@@ -21,6 +21,8 @@ LogFrame::LogFrame(int ind_v, float Offset_v, string BW_v, string MCS_v, int Siz
     Frame = Frame_v;
     info = info_v;
     FCS = FCS_v;
+    TA = TA_v;
+    RA = RA_v;
 }
 
 bool LogFrame::isCorrect() {
@@ -33,18 +35,25 @@ string LogFrame::toString() {
     return s.str();
 }
 
+string LogFrame::getTAAndRA() {
+    return "TA=" + to_string(TA) + " RA=" + to_string(RA) ;
+}
+
 LogFrame parse(const vector<string> &lines) {
     // init
     float Offset_v = 0.0;
     string BW_v = "", MCS_v = "", Frame_v = "", info_v = "";
     int ind_v = 1, Size_v = 0;
+    u_int64_t TA_v = 0, RA_v = 0;
     bool FCS_v = false;
     
     // parse
     // regular expressions for parsing DataFrame
     const regex regex_line1("(\\d+)\\s+Offset=(\\d+\\.\\d+),BW=(\\w+),MCS=(.+),Size=(\\d+)");
-    const regex regex_line2("Frame=(\\d+)");
-    const regex regex_line3("FCS=Fail");
+    const regex regex_line2("Frame=([0-9a-fA-F]+)");
+    const regex regex_FCS("FCS=Fail");
+    const regex regex_TA("TA=([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+)");
+    const regex regex_RA("RA=([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+)");
     
     smatch line1_groups;
     if (regex_search(lines[0], line1_groups, regex_line1)) {
@@ -61,10 +70,19 @@ LogFrame parse(const vector<string> &lines) {
     }
     
     smatch line3_groups;
-    if (!regex_search(lines[2], line3_groups, regex_line3)) {
+    if (!regex_search(lines[2], line3_groups, regex_FCS)) {
         FCS_v = true;
+    }
+    info_v = lines[2];
+    if (FCS_v && regex_search(info_v, line3_groups, regex_TA)) {
+        string hex = line3_groups[1].str() + line3_groups[2].str() + line3_groups[3].str() + line3_groups[4].str();
+        TA_v = stoull(hex, 0, 16);
+    }
+    if (FCS_v && regex_search(info_v, line3_groups, regex_RA)) {
+        string hex = line3_groups[1].str() + line3_groups[2].str() + line3_groups[3].str() + line3_groups[4].str();
+        RA_v = stoull(hex, 0, 16);
     }
     
     // return
-    return LogFrame(ind_v, Offset_v, BW_v, MCS_v, Size_v, Frame_v, info_v, FCS_v);
+    return LogFrame(ind_v, Offset_v, BW_v, MCS_v, Size_v, Frame_v, info_v, FCS_v, TA_v, RA_v);
 }

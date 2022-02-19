@@ -22,8 +22,10 @@ void readFromLog() {
     vector<LogFrame> frames;
     readFromFile(path, frames);
     
-//    for (LogFrame frame : frames)
-//        cout << frame.toString();
+    for (LogFrame frame : frames) {
+        cout << frame.toString() << '\n';
+        cout << frame.getTAAndRA() << "\n\n";
+    }
     
     Statistics stat(frames);
     cout << stat.toString() << endl;
