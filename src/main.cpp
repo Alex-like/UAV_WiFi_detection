@@ -19,6 +19,7 @@ void readFromLog() {
     string path;
     cout << "Введите путь до файла:\n";
     cin >> path;
+    cout << '\n';
     vector<LogFrame> frames;
     readFromFile(path, frames);
     
@@ -27,14 +28,14 @@ void readFromLog() {
 //        cout << frame.getTAAndRA() << "\n\n";
 //    }
     
-//    Statistics stat(frames);
-//    cout << stat.toString() << endl;
+    Statistics stat(frames);
+    cout << stat.toString() << "\n";
     
     Graph graph = Graph();
     for (LogFrame frame : frames) {
         graph.addEdge(frame.getTA(), frame.getRA());
     }
-    cout << graph.toString() << endl;
+    cout << graph.toString() << "\n";
 }
 
 int main(int argc, const char * argv[]) {
