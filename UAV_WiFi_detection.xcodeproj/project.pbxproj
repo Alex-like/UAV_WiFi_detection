@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E4F0C4927C0E702003B797F /* Graph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E4F0C4727C0E702003B797F /* Graph.cpp */; };
+		7E4F0C4C27C25EAB003B797F /* Edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E4F0C4A27C25EAB003B797F /* Edge.cpp */; };
 		7E71F0F427B9455C005F5E8C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E71F0F327B9455C005F5E8C /* main.cpp */; };
 		7E71F13027B95538005F5E8C /* LogFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E71F12E27B95538005F5E8C /* LogFrame.cpp */; };
 		7E71F13327B9CCE7005F5E8C /* Statistics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E71F13127B9CCE7005F5E8C /* Statistics.cpp */; };
@@ -26,6 +28,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7E4F0C4727C0E702003B797F /* Graph.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Graph.cpp; sourceTree = "<group>"; };
+		7E4F0C4827C0E702003B797F /* Graph.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Graph.hpp; sourceTree = "<group>"; };
+		7E4F0C4A27C25EAB003B797F /* Edge.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Edge.cpp; sourceTree = "<group>"; };
+		7E4F0C4B27C25EAB003B797F /* Edge.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Edge.hpp; sourceTree = "<group>"; };
 		7E71F0F027B9455C005F5E8C /* UAV_WiFi_detection */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UAV_WiFi_detection; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E71F0F327B9455C005F5E8C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		7E71F12E27B95538005F5E8C /* LogFrame.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LogFrame.cpp; sourceTree = "<group>"; };
@@ -111,6 +117,10 @@
 				7E71F13227B9CCE7005F5E8C /* Statistics.hpp */,
 				7E71F13427BA4F9C005F5E8C /* Utils.cpp */,
 				7E71F13527BA4F9C005F5E8C /* Utils.hpp */,
+				7E4F0C4727C0E702003B797F /* Graph.cpp */,
+				7E4F0C4827C0E702003B797F /* Graph.hpp */,
+				7E4F0C4A27C25EAB003B797F /* Edge.cpp */,
+				7E4F0C4B27C25EAB003B797F /* Edge.hpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -348,10 +358,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E4F0C4C27C25EAB003B797F /* Edge.cpp in Sources */,
 				7E71F13327B9CCE7005F5E8C /* Statistics.cpp in Sources */,
 				7E71F13027B95538005F5E8C /* LogFrame.cpp in Sources */,
 				7E71F0F427B9455C005F5E8C /* main.cpp in Sources */,
 				7E71F13627BA4F9C005F5E8C /* Utils.cpp in Sources */,
+				7E4F0C4927C0E702003B797F /* Graph.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

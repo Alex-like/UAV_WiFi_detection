@@ -6,7 +6,6 @@
 //
 
 #include "Statistics.hpp"
-#include <sstream>
 
 using namespace std;
 

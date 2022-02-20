@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <string>
+#include <sstream>
 #include "LogFrame.hpp"
 
 using namespace std;

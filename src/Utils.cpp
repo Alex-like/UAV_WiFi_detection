@@ -5,8 +5,6 @@
 //  Created by Alex Shchelochkov on 14.02.2022.
 //
 
-#include <fstream>
-#include <regex>
 #include "Utils.hpp"
 
 void readFromFile(const string path, vector<LogFrame> &to) {
@@ -32,4 +30,24 @@ void readFromFile(const string path, vector<LogFrame> &to) {
     }
     in.close();
     return;
+}
+
+string decToHex(const u_int64_t dec) {
+    stringstream ss;
+    ss << std::hex << dec;
+    return ss.str();
+}
+
+string hexToMAC(string hex) {
+    uint8_t len = hex.length();
+    if (len < 12) {
+        for (int i = 0; i < 12 - len; i++) {
+            hex = '0' + hex;
+        }
+    }
+    string res = hex.substr(0, 2);
+    for (int i = 1; i < 6; i++) {
+        res += ':' + hex.substr(2 * i, 2);
+    }
+    return res;
 }

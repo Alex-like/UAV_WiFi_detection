@@ -6,9 +6,6 @@
 //
 
 #include "LogFrame.hpp"
-#include <regex>
-#include <iostream>
-#include <sstream>
 
 using namespace std;
 
@@ -37,6 +34,14 @@ string LogFrame::toString() {
 
 string LogFrame::getTAAndRA() {
     return "TA=" + to_string(TA) + " RA=" + to_string(RA) ;
+}
+
+u_int64_t LogFrame::getTA() {
+    return TA;
+}
+
+u_int64_t LogFrame::getRA() {
+    return RA;
 }
 
 LogFrame parse(const vector<string> &lines) {
@@ -75,11 +80,11 @@ LogFrame parse(const vector<string> &lines) {
     }
     info_v = lines[2];
     if (FCS_v && regex_search(info_v, line3_groups, regex_TA)) {
-        string hex = line3_groups[1].str() + line3_groups[2].str() + line3_groups[3].str() + line3_groups[4].str();
+        string hex = line3_groups[1].str() + line3_groups[2].str() + line3_groups[3].str() + line3_groups[4].str() + line3_groups[5].str() + line3_groups[6].str();
         TA_v = stoull(hex, 0, 16);
     }
     if (FCS_v && regex_search(info_v, line3_groups, regex_RA)) {
-        string hex = line3_groups[1].str() + line3_groups[2].str() + line3_groups[3].str() + line3_groups[4].str();
+        string hex = line3_groups[1].str() + line3_groups[2].str() + line3_groups[3].str() + line3_groups[4].str() + line3_groups[5].str() + line3_groups[6].str();
         RA_v = stoull(hex, 0, 16);
     }
     

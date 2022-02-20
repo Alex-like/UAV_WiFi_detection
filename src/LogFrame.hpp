@@ -10,6 +10,9 @@
 
 #include <vector>
 #include <string>
+#include <regex>
+#include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -38,6 +41,10 @@ public:
     string toString();
     
     string getTAAndRA();
+    
+    u_int64_t getTA();
+    
+    u_int64_t getRA();
 };
 
 LogFrame parse(const vector<string> &lines);
