@@ -32,6 +32,8 @@
 		7E4F0C4827C0E702003B797F /* Graph.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Graph.hpp; sourceTree = "<group>"; };
 		7E4F0C4A27C25EAB003B797F /* Edge.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Edge.cpp; sourceTree = "<group>"; };
 		7E4F0C4B27C25EAB003B797F /* Edge.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Edge.hpp; sourceTree = "<group>"; };
+		7E4F0C4D27C2F81D003B797F /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		7E4F0C4E27C2F884003B797F /* libs_dependences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libs_dependences.txt; sourceTree = "<group>"; };
 		7E71F0F027B9455C005F5E8C /* UAV_WiFi_detection */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UAV_WiFi_detection; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E71F0F327B9455C005F5E8C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		7E71F12E27B95538005F5E8C /* LogFrame.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LogFrame.cpp; sourceTree = "<group>"; };
@@ -91,6 +93,8 @@
 		7E71F0E727B9455C005F5E8C = {
 			isa = PBXGroup;
 			children = (
+				7E4F0C4E27C2F884003B797F /* libs_dependences.txt */,
+				7E4F0C4D27C2F81D003B797F /* .gitignore */,
 				7EFF7BF627BE767A009CAA0D /* task.md */,
 				7E71F13827BA57D0005F5E8C /* data */,
 				7E71F13727BA567C005F5E8C /* README.md */,

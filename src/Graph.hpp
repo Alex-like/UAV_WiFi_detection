@@ -11,6 +11,7 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <optional>
 #include "Edge.hpp"
 
 using namespace std;
@@ -23,7 +24,7 @@ public:
     Graph(vector<Edge> &edges_v);
     string toString();
     void addEdge(Edge e);
-    void addEdge(u_int64_t from, u_int64_t to);
+    void addEdge(optional<u_int64_t> from, optional<u_int64_t> to);
 };
 
 #endif /* Graph_hpp */

@@ -117,3 +117,6 @@ fabric.properties
 
 # readme.md and task.md
 task.md
+
+# libs dependeces
+libs_dependences.txt

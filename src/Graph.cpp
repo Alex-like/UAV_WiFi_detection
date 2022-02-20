@@ -43,12 +43,15 @@ void Graph::addEdge(Edge e) {
 }
 
 
-void Graph::addEdge(u_int64_t from, u_int64_t to) {
-    if (edges.find(from) == edges.end()) {
-        edges[from] = {};
+void Graph::addEdge(optional<u_int64_t> from, optional<u_int64_t> to) {
+    if (!from.has_value() || !to.has_value()) {
+        return;
     }
-    if (edges[from].find(to) == edges[from].end()) {
-        edges[from][to] = 0;
+    if (edges.find(from.value()) == edges.end()) {
+        edges[from.value()] = {};
     }
-    edges[from][to] += 1;
+    if (edges[from.value()].find(to.value()) == edges[from.value()].end()) {
+        edges[from.value()][to.value()] = 0;
+    }
+    edges[from.value()][to.value()] += 1;
 }

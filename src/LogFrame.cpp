@@ -9,7 +9,7 @@
 
 using namespace std;
 
-LogFrame::LogFrame(int ind_v, float Offset_v, string BW_v, string MCS_v, int Size_v, string Frame_v, string info_v, bool FCS_v, u_int64_t TA_v, u_int64_t RA_v) {
+LogFrame::LogFrame(int ind_v, float Offset_v, string BW_v, string MCS_v, int Size_v, string Frame_v, string info_v, bool FCS_v, optional<u_int64_t> TA_v, optional<u_int64_t> RA_v) {
     ind = ind_v;
     Offset = Offset_v;
     BW = BW_v;
@@ -33,14 +33,16 @@ string LogFrame::toString() {
 }
 
 string LogFrame::getTAAndRA() {
-    return "TA=" + to_string(TA) + " RA=" + to_string(RA) ;
+    string TA_str = TA.has_value() ? to_string(TA.value()) : " –";
+    string RA_str = RA.has_value() ? to_string(RA.value()) : " –";
+    return "TA=" + TA_str + " RA=" + RA_str;
 }
 
-u_int64_t LogFrame::getTA() {
+optional<u_int64_t> LogFrame::getTA() {
     return TA;
 }
 
-u_int64_t LogFrame::getRA() {
+optional<u_int64_t> LogFrame::getRA() {
     return RA;
 }
 
@@ -49,7 +51,7 @@ LogFrame parse(const vector<string> &lines) {
     float Offset_v = 0.0;
     string BW_v = "", MCS_v = "", Frame_v = "", info_v = "";
     int ind_v = 1, Size_v = 0;
-    u_int64_t TA_v = 0, RA_v = 0;
+    optional<u_int64_t> TA_v, RA_v;
     bool FCS_v = false;
     
     // parse

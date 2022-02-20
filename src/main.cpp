@@ -29,6 +29,7 @@ void readFromLog() {
     
 //    Statistics stat(frames);
 //    cout << stat.toString() << endl;
+    
     Graph graph = Graph();
     for (LogFrame frame : frames) {
         graph.addEdge(frame.getTA(), frame.getRA());
