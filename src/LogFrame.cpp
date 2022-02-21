@@ -9,7 +9,7 @@
 
 using namespace std;
 
-LogFrame::LogFrame(int ind_v, float Offset_v, string BW_v, string MCS_v, int Size_v, string Frame_v, string info_v, bool FCS_v, optional<u_int64_t> TA_v, optional<u_int64_t> RA_v) {
+LogFrame::LogFrame(int ind_v, float Offset_v, string BW_v, string MCS_v, int Size_v, string Frame_v, string info_v, bool FCS_v, optional<string> Type_v, optional<u_int64_t> TA_v, optional<u_int64_t> RA_v) {
     ind = ind_v;
     Offset = Offset_v;
     BW = BW_v;
@@ -18,6 +18,7 @@ LogFrame::LogFrame(int ind_v, float Offset_v, string BW_v, string MCS_v, int Siz
     Frame = Frame_v;
     info = info_v;
     FCS = FCS_v;
+    Type = Type_v;
     TA = TA_v;
     RA = RA_v;
 }
@@ -38,6 +39,10 @@ string LogFrame::getTAAndRA() {
     return "TA=" + TA_str + " RA=" + RA_str;
 }
 
+optional<string> LogFrame::getType() {
+    return Type;
+}
+
 optional<u_int64_t> LogFrame::getTA() {
     return TA;
 }
@@ -52,15 +57,18 @@ LogFrame parse(const vector<string> &lines) {
     string BW_v = "", MCS_v = "", Frame_v = "", info_v = "";
     int ind_v = 1, Size_v = 0;
     optional<u_int64_t> TA_v, RA_v;
+    optional<string> Type_v;
     bool FCS_v = false;
     
     // parse
+    const string MAC_template = "([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+)";
     // regular expressions for parsing DataFrame
     const regex regex_line1("(\\d+)\\s+Offset=(\\d+\\.\\d+),BW=(\\w+),MCS=(.+),Size=(\\d+)");
     const regex regex_line2("Frame=([0-9a-fA-F]+)");
     const regex regex_FCS("FCS=Fail");
-    const regex regex_TA("TA.*?=([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+)");
-    const regex regex_RA("RA.*?=([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+)");
+    const regex regex_Type("Type=(\\S+),");
+    const regex regex_TA("TA.*?=" + MAC_template);
+    const regex regex_RA("RA.*?=" + MAC_template);
     
     smatch line1_groups;
     if (regex_search(lines[0], line1_groups, regex_line1)) {
@@ -81,6 +89,9 @@ LogFrame parse(const vector<string> &lines) {
         FCS_v = true;
     }
     info_v = lines[2];
+    if (FCS_v && regex_search(info_v, line3_groups, regex_Type)) {
+        Type_v = line3_groups[1];
+    }
     if (FCS_v && regex_search(info_v, line3_groups, regex_TA)) {
         string hex = line3_groups[1].str() + line3_groups[2].str() + line3_groups[3].str() + line3_groups[4].str() + line3_groups[5].str() + line3_groups[6].str();
         TA_v = stoull(hex, 0, 16);
@@ -91,5 +102,5 @@ LogFrame parse(const vector<string> &lines) {
     }
     
     // return
-    return LogFrame(ind_v, Offset_v, BW_v, MCS_v, Size_v, Frame_v, info_v, FCS_v, TA_v, RA_v);
+    return LogFrame(ind_v, Offset_v, BW_v, MCS_v, Size_v, Frame_v, info_v, FCS_v, Type_v, TA_v, RA_v);
 }
