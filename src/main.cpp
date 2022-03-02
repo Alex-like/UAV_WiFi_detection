@@ -31,11 +31,19 @@ void readFromLog() {
     Statistics stat(frames);
     cout << stat.toString() << "\n";
     
-    Graph graph = Graph();
+//    Graph graph = Graph();
+//    for (LogFrame frame : frames) {
+//        graph.addEdge(frame.getTA(), frame.getRA());
+//    }
+//    cout << graph.toString() << "\n";
+    
     for (LogFrame frame : frames) {
-        graph.addEdge(frame.getTA(), frame.getRA());
+        if (frame.getType() == "Management/Beacon") {
+            string TA = hexToMAC(decToHex(frame.getTA().value()));
+            string RA = hexToMAC(decToHex(frame.getRA().value()));
+            cout << frame.getType().value() << '\t' << "TA=" << TA << " RA=" << RA << '\n';
+        }
     }
-    cout << graph.toString() << "\n";
 }
 
 int main(int argc, const char * argv[]) {
