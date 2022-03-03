@@ -19,6 +19,7 @@
 
 using namespace std;
 
+/// Hexadecimal value of broadcast MAC-address' mask.
 const u_int64_t BROADCAST = 0xffffffffffff;
 
 class GroupedGraph: public Graph {

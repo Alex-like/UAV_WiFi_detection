@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <regex>
 #include "LogFrame.hpp"
 #include "Statistics.hpp"
 #include "Utils.hpp"
@@ -29,8 +28,8 @@ void readFromLog() {
 //        cout << frame.getTAAndRA() << "\n\n";
 //    }
     
-    Statistics stat(frames);
-    cout << stat.toString() << "\n";
+//    Statistics stat(frames);
+//    cout << stat.toString() << "\n";
     
 //    Graph graph = Graph();
 //    for (LogFrame frame : frames) {
@@ -55,6 +54,5 @@ void readFromLog() {
 
 int main(int argc, const char * argv[]) {
     readFromLog();
-//    cout << hexToMAC(decToHex(1252452)) << endl;
     return 0;
 }
