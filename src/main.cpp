@@ -12,6 +12,7 @@
 #include "Statistics.hpp"
 #include "Utils.hpp"
 #include "Graph.hpp"
+#include "GroupedGraph.hpp"
 
 using namespace std;
 
@@ -37,13 +38,19 @@ void readFromLog() {
 //    }
 //    cout << graph.toString() << "\n";
     
+    GroupedGraph graph = GroupedGraph();
     for (LogFrame frame : frames) {
         if (frame.getType() == "Management/Beacon") {
-            string TA = hexToMAC(decToHex(frame.getTA().value()));
-            string RA = hexToMAC(decToHex(frame.getRA().value()));
-            cout << frame.getType().value() << '\t' << "TA=" << TA << " RA=" << RA << '\n';
+            if (frame.getSSID().has_value() && frame.getTA().has_value()) {
+                graph.addGroup(frame.getSSID().value(), frame.getTA().value());
+            }
+        } else {
+            if (frame.getTA().has_value() && frame.getRA().has_value()) {
+                graph.addEdge(frame.getTA().value(), frame.getRA().value());
+            }
         }
     }
+    cout << graph.toString() << '\n';
 }
 
 int main(int argc, const char * argv[]) {

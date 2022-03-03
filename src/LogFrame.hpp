@@ -30,13 +30,14 @@ private:
     // 3 Line
     string info;
     optional<string> Type;
+    optional<string> SSID; // SSID - like name
     // MAC addresses
     optional<u_int64_t> TA; // TA - transmitter address
     optional<u_int64_t> RA; // RA - receiver address
     // Correctness of Frame
     bool FCS;
 public:
-    LogFrame(int ind_v, float Offset_v, string BW_v, string MCS_v, int Size_v, string Frame_v, string info_v, bool FCS_v, optional<string> Type_v, optional<u_int64_t> TA_v, optional<u_int64_t> RA_v);
+    LogFrame(int ind_v, float Offset_v, string BW_v, string MCS_v, int Size_v, string Frame_v, string info_v, bool FCS_v, optional<string> Type_v, optional<string> SSID_v,optional<u_int64_t> TA_v, optional<u_int64_t> RA_v);
     
     bool isCorrect();
     
@@ -49,6 +50,8 @@ public:
     optional<u_int64_t> getTA();
     
     optional<u_int64_t> getRA();
+    
+    optional<string> getSSID();
 };
 
 LogFrame parse(const vector<string> &lines);

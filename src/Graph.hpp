@@ -20,7 +20,7 @@ class Graph {
 private:
     map<u_int64_t, map<u_int64_t, u_int64_t>> edges;
 public:
-    Graph(map<u_int64_t, map<u_int64_t, u_int64_t>> edges_v = map<u_int64_t, map<u_int64_t, u_int64_t>>());
+    Graph(map<u_int64_t, map<u_int64_t, u_int64_t>> edges_v = {});
     Graph(vector<Edge> &edges_v);
     string toString();
     void addEdge(Edge e);

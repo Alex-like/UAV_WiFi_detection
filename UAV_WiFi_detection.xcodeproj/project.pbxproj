@@ -14,6 +14,7 @@
 		7E71F13327B9CCE7005F5E8C /* Statistics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E71F13127B9CCE7005F5E8C /* Statistics.cpp */; };
 		7E71F13627BA4F9C005F5E8C /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E71F13427BA4F9C005F5E8C /* Utils.cpp */; };
 		7ED53F5827CFA48300B7D16D /* Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7ED53F5627CFA48300B7D16D /* Group.cpp */; };
+		7ED53F5B27D0A62900B7D16D /* GroupedGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7ED53F5927D0A62900B7D16D /* GroupedGraph.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -79,6 +80,8 @@
 		7E71F16A27BA57D0005F5E8C /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = "<group>"; };
 		7ED53F5627CFA48300B7D16D /* Group.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Group.cpp; sourceTree = "<group>"; };
 		7ED53F5727CFA48300B7D16D /* Group.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Group.hpp; sourceTree = "<group>"; };
+		7ED53F5927D0A62900B7D16D /* GroupedGraph.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GroupedGraph.cpp; sourceTree = "<group>"; };
+		7ED53F5A27D0A62900B7D16D /* GroupedGraph.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GroupedGraph.hpp; sourceTree = "<group>"; };
 		7EFF7BF627BE767A009CAA0D /* task.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = task.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -130,6 +133,8 @@
 				7E4F0C4B27C25EAB003B797F /* Edge.hpp */,
 				7ED53F5627CFA48300B7D16D /* Group.cpp */,
 				7ED53F5727CFA48300B7D16D /* Group.hpp */,
+				7ED53F5927D0A62900B7D16D /* GroupedGraph.cpp */,
+				7ED53F5A27D0A62900B7D16D /* GroupedGraph.hpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -368,6 +373,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E4F0C4C27C25EAB003B797F /* Edge.cpp in Sources */,
+				7ED53F5B27D0A62900B7D16D /* GroupedGraph.cpp in Sources */,
 				7E71F13327B9CCE7005F5E8C /* Statistics.cpp in Sources */,
 				7E71F13027B95538005F5E8C /* LogFrame.cpp in Sources */,
 				7E71F0F427B9455C005F5E8C /* main.cpp in Sources */,

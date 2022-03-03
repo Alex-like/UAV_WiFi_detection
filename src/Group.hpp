@@ -9,7 +9,6 @@
 #define Group_hpp
 
 #include <map>
-#include <vector>
 #include <string>
 #include <sstream>
 #include "Utils.hpp"
@@ -20,11 +19,11 @@ class Group {
 private:
     string SSID; // Name
     u_int64_t host; // BSSID
-    map<u_int64_t, pair<u_int64_t, u_int64_t>> clients;
+    map<u_int64_t, pair<u_int64_t, u_int64_t>> clients; // MAC -> {received, transmitted}
 public:
+    Group(string name = "", u_int64_t MAC = 0, map<u_int64_t, pair<u_int64_t, u_int64_t>> addresses = {});
     string toString();
-    void addClient(const u_int64_t client, const bool received); // recived = true - получено | recieved = false - отправлено
+    void addClient(const u_int64_t client, const bool received); // received = true - получено от ТД | received = false - отправлено к ТД
 };
-
 
 #endif /* Group_hpp */
