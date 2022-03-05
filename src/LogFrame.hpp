@@ -88,13 +88,39 @@ public:
      * @return string representation of TA and RA.
      */
     string getTAAndRA();
-    // TODO
+    /**
+     * Get frame type.
+     *
+     * @return frame type if frame is correct.
+     */
     optional<string> getType();
+    /**
+     * Get transmitter addres.
+     *
+     * @return TA if frame is correct and has it.
+     */
     optional<u_int64_t> getTA();
+    /**
+     * Get receiver address.
+     *
+     * @return RA if frame is correct and has it.
+     */
     optional<u_int64_t> getRA();
+    /**
+     * Get frame SSID.
+     *
+     * @return SSID if frame is correct and has it.
+     */
     optional<string> getSSID();
 };
 
+/**
+ * Get frame information from string.
+ *
+ * @param lines reference to separated lines which contain information.
+ *
+ * @return extracted information about frame.
+ */
 LogFrame parse(const vector<string> &lines);
 
 #endif /* LogFrame_hpp */
