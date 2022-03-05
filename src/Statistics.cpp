@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Statistics::Statistics(int whole_v, int correct_v, int incorrect_v) {
+Statistics::Statistics(u_int64_t whole_v, u_int64_t correct_v, u_int64_t incorrect_v) {
     whole = whole_v;
     correct = correct_v;
     incorrect = incorrect_v;
@@ -30,6 +30,6 @@ Statistics::Statistics(const vector<LogFrame> &frames) {
 
 string Statistics::toString() {
     stringstream s;
-    s << "Whole frames' number: " << whole << "\nCorrect frames: " << correct << "\nIncorrect frames: " << incorrect << "\nPercentage correct frames of the total: " << ((double)correct / (double)whole * 100.0) << endl;
+    s << "Whole frames' number: " << whole << "\nCorrect frames: " << correct << "\nIncorrect frames: " << incorrect << "\nPercentage correct frames of the total: " << ((long double)correct / (long double)whole * 100.0) << endl;
     return s.str();
 }

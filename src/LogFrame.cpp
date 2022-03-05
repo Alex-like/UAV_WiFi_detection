@@ -9,7 +9,7 @@
 
 using namespace std;
 
-LogFrame::LogFrame(int ind_v, float Offset_v, string BW_v, string MCS_v, int Size_v, string Frame_v, string info_v, bool FCS_v, optional<string> Type_v, optional<string> SSID_v, optional<u_int64_t> TA_v, optional<u_int64_t> RA_v) {
+LogFrame::LogFrame(u_int64_t ind_v, float Offset_v, string BW_v, string MCS_v, int Size_v, string Frame_v, string info_v, bool FCS_v, optional<string> Type_v, optional<string> SSID_v, optional<u_int64_t> TA_v, optional<u_int64_t> RA_v) {
     ind = ind_v;
     Offset = Offset_v;
     BW = BW_v;
@@ -60,7 +60,8 @@ LogFrame parse(const vector<string> &lines) {
     // init
     float Offset_v = 0.0;
     string BW_v = "", MCS_v = "", Frame_v = "", info_v = "";
-    int ind_v = 1, Size_v = 0;
+    u_int64_t ind_v = 1;
+    int Size_v = 0;
     optional<u_int64_t> TA_v, RA_v;
     optional<string> Type_v, SSID_v;
     bool FCS_v = false;
@@ -78,7 +79,7 @@ LogFrame parse(const vector<string> &lines) {
     
     smatch line1_groups;
     if (regex_search(lines[0], line1_groups, regex_line1)) {
-        ind_v = stoi(line1_groups[1]);
+        ind_v = stoull(line1_groups[1]);
         Offset_v = stof(line1_groups[2]);
         BW_v = line1_groups[3];
         MCS_v = line1_groups[4];
