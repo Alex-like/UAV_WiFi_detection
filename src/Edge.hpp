@@ -14,16 +14,51 @@
 
 using namespace std;
 
+/**
+ * Connection structure.
+ *
+ * Decompose connection to transmitter address, receiver address and number of times they connected with each other.
+ */
 class Edge {
 private:
-    u_int64_t from; // TA - transmitter address
-    u_int64_t to; // RA - receiver address
-    u_int64_t weight; // Number of requests
+    /// TA - transmitter address
+    u_int64_t from;
+    /// RA - receiver address
+    u_int64_t to;
+    /// Number of requests
+    u_int64_t weight;
 public:
+    /**
+     * Basic constructor.
+     *
+     * @param from_v transmitted address.
+     * @param to_v receiver address.
+     * @param cnt how many times they connected with each other.
+     */
     Edge(u_int64_t from_v, u_int64_t to_v, u_int64_t cnt);
+    /**
+     * String value of edge.
+     *
+     * @return string representation of Connection.
+     */
     string toString();
+    /**
+     * Getter for transmitter addres.
+     *
+     * @return transmitter address.
+     */
     u_int64_t getFrom();
+    /**
+     * Getter for receiver addres.
+     *
+     * @return receiver address.
+     */
     u_int64_t getTo();
+    /**
+     * Getter for number of connections.
+     *
+     * @return times of connections.
+     */
     u_int64_t getWeight();
 };
 
