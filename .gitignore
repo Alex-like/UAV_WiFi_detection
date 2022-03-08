@@ -115,7 +115,8 @@ fabric.properties
 # data
 /data
 
-# readme.md and task.md
+# report.md and task.md
+report.md
 task.md
 
 # libs dependeces

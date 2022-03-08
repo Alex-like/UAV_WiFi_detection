@@ -78,6 +78,7 @@
 		7E71F16827BA57D0005F5E8C /* Vega_2021-03-30_15-13-49-781_1_5785000000_10000000_11764706.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Vega_2021-03-30_15-13-49-781_1_5785000000_10000000_11764706.log"; sourceTree = "<group>"; };
 		7E71F16927BA57D0005F5E8C /* Vega_2021-03-30_15-13-49-781_1_5785000000_10000000_11764706.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Vega_2021-03-30_15-13-49-781_1_5785000000_10000000_11764706.pcap"; sourceTree = "<group>"; };
 		7E71F16A27BA57D0005F5E8C /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = "<group>"; };
+		7EA9DD3527D7F8E2002F4241 /* report.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = report.md; sourceTree = "<group>"; };
 		7ED53F5627CFA48300B7D16D /* Group.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Group.cpp; sourceTree = "<group>"; };
 		7ED53F5727CFA48300B7D16D /* Group.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Group.hpp; sourceTree = "<group>"; };
 		7ED53F5927D0A62900B7D16D /* GroupedGraph.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GroupedGraph.cpp; sourceTree = "<group>"; };
@@ -99,6 +100,7 @@
 		7E71F0E727B9455C005F5E8C = {
 			isa = PBXGroup;
 			children = (
+				7EA9DD3527D7F8E2002F4241 /* report.md */,
 				7E4F0C4E27C2F884003B797F /* libs_dependences.txt */,
 				7E4F0C4D27C2F81D003B797F /* .gitignore */,
 				7EFF7BF627BE767A009CAA0D /* task.md */,
