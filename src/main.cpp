@@ -28,8 +28,8 @@ void readFromLog() {
 //        cout << frame.getTAAndRA() << "\n\n";
 //    }
     
-//    Statistics stat(frames);
-//    cout << stat.toString() << "\n";
+    Statistics stat(frames);
+    cout << stat.toString() << "\n";
     
 //    Graph graph = Graph();
 //    for (LogFrame frame : frames) {

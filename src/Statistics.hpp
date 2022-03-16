@@ -28,6 +28,8 @@ private:
     u_int64_t incorrect;
     /// Total number of frames.
     u_int64_t whole;
+    /// Number of frames without some address information
+    u_int64_t noAddress;
 public:
     /**
      * Basic constructor.
@@ -36,7 +38,7 @@ public:
      * @param correct_v numer of correct frames.
      * @param incorrect_v number of incorrect frames.
      */
-    Statistics(u_int64_t whole_v, u_int64_t correct_v, u_int64_t incorrect_v);
+    Statistics(u_int64_t whole_v, u_int64_t correct_v, u_int64_t incorrect_v, u_int64_t noAddress_v);
     /**
      * Alternative constructor.
      *
