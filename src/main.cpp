@@ -29,7 +29,20 @@ void readFromLog() {
 //    }
     
     Statistics stat(frames);
-    cout << stat.toString() << "\n";
+    cout << stat.toString() << '\n';
+    
+//    map<string, u_int64_t> types;
+//    for (LogFrame frame : frames) {
+//        if (frame.getType().has_value()) {
+//            if (types.find(frame.getType().value()) == types.end()) {
+//                types[frame.getType().value()] = 0;
+//            }
+//            types[frame.getType().value()]++;
+//        }
+//    }
+//    for (auto &type : types) {
+//        cout << type.first << " : " << type.second << '\n';
+//    }
     
 //    Graph graph = Graph();
 //    for (LogFrame frame : frames) {
@@ -43,10 +56,9 @@ void readFromLog() {
             if (frame.getSSID().has_value() && frame.getTA().has_value()) {
                 graph.addGroup(frame.getSSID().value(), frame.getTA().value());
             }
-        } else {
-            if (frame.getTA().has_value() && frame.getRA().has_value()) {
-                graph.addEdge(frame.getTA().value(), frame.getRA().value());
-            }
+        }
+        if (frame.getTA().has_value() && frame.getRA().has_value()) {
+            graph.addEdge(frame.getTA().value(), frame.getRA().value());
         }
     }
     cout << graph.toString() << '\n';

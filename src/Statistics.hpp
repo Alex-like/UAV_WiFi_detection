@@ -28,7 +28,7 @@ private:
     u_int64_t incorrect;
     /// Total number of frames.
     u_int64_t whole;
-    /// Number of frames without some address information
+    /// Number of frames without some address information.
     u_int64_t noAddress;
 public:
     /**
@@ -37,6 +37,7 @@ public:
      * @param whole_v total number of frames.
      * @param correct_v numer of correct frames.
      * @param incorrect_v number of incorrect frames.
+     * @param noAddress_v number of frmaes without address information.
      */
     Statistics(u_int64_t whole_v, u_int64_t correct_v, u_int64_t incorrect_v, u_int64_t noAddress_v);
     /**

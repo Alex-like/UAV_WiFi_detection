@@ -72,8 +72,8 @@ LogFrame parse(const vector<string> &lines) {
     const regex regex_line1("(\\d+)\\s+Offset=(\\d+\\.\\d+),BW=(\\w+),MCS=(.+),Size=(\\d+)");
     const regex regex_line2("Frame=([0-9a-fA-F]+)");
     const regex regex_FCS("FCS=Fail");
-    const regex regex_Type("Type=(\\S+),");
-    const regex regex_SSID("[^B]SSID=('.+')");
+    const regex regex_Type("Type=([^,]+),");
+    const regex regex_SSID("[^B]SSID=('.*')");
     const regex regex_TA("TA.*?=" + MAC_template);
     const regex regex_RA("RA.*?=" + MAC_template);
     

@@ -27,7 +27,7 @@ Statistics::Statistics(const vector<LogFrame> &frames) {
         } else {
             incorrect++;
         }
-        if (!frame.getTA().has_value() || !frame.getRA().has_value()) {
+        if (frame.isCorrect() && (!frame.getTA().has_value() || !frame.getRA().has_value())) {
             noAddress++;
         }
     }
