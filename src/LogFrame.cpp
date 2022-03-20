@@ -56,6 +56,10 @@ optional<u_int64_t> LogFrame::getRA() {
     return RA;
 }
 
+string LogFrame::getData() {
+    return info;
+}
+
 LogFrame parse(const vector<string> &lines) {
     // init
     float Offset_v = 0.0;

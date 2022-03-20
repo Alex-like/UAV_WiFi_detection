@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+#include <set>
 #include <fstream>
 #include <regex>
 #include <sstream>
@@ -40,5 +41,11 @@ string decToHex(const u_int64_t dec);
  * @return string equals MAC-address constructed from `hex`.
  */
 string hexToMAC(const string hex);
+
+void getAddressesFromFile(string path);
+
+void getAddressesFromStr(string str, set<string> &macs);
+
+u_int64_t macToHex(string mac);
 
 #endif /* Utils_hpp */

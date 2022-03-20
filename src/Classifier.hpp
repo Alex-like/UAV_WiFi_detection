@@ -12,10 +12,9 @@
 #include <set>
 #include <map>
 #include <string>
-#include <regex>
-#include <iostream>
 #include <sstream>
 #include <optional>
+#include "Utils.hpp"
 
 using namespace std;
 
@@ -31,9 +30,18 @@ enum Type {
     Controller,
     /// Access point.
     AccessPoint,
-    /// Other devices.
+    /// Other device.
     Unknown
 };
+
+/**
+ * Convert type to string.
+ *
+ * @param dev device type.
+ *
+ * @return string representation of `dev`.
+ */
+string toString(Type dev);
 
 /**
  * Features for detection.
@@ -47,22 +55,43 @@ enum Feature {
     SSID
 };
 
+/**
+ * Convert feature to string.
+ *
+ * @param ftr feature.
+ *
+ * @return string representation of `ftr`.
+ */
+string toString(Feature ftr);
+
 class Object {
 private:
     u_int64_t MAC;
     set<Feature> features;
     Type device;
+    optional<string> info;
 public:
-    Object(u_int64_t mac_v);
+    Object(u_int64_t mac_v, set<Feature> features_v = {}, Type device_v = Unknown);
     string toString();
+    void setInfo(string data);
+    void setDevice(Type dev);
+    void addFeature(Feature ftr);
 };
 
 class Classifier {
 private:
     static map<u_int64_t, string> macToCompany;
+    static set<string> stopWords;
 public:
     Classifier();
-    static Object classify(u_int64_t mac);
+    static optional<Object> classify(u_int64_t mac, optional<string> ssid);
 };
+
+template<class T, class E>
+bool checkExist(T key, map<T, E> &dict);
+
+void checkExistAndAddDevice(u_int64_t key, map<u_int64_t, string> &dict, Object &obj);
+
+void addDevice(u_int64_t key, map<u_int64_t, string> &dict, Object &obj);
 
 #endif /* Classifier_hpp */

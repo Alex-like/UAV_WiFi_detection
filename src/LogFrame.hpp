@@ -112,6 +112,8 @@ public:
      * @return SSID if frame is correct and has it.
      */
     optional<string> getSSID();
+    
+    string getData();
 };
 
 /**
