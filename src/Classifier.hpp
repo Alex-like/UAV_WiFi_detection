@@ -82,9 +82,12 @@ class Classifier {
 private:
     static map<u_int64_t, string> macToCompany;
     static set<string> stopWords;
+    static set<string> droneCompanies;
 public:
     Classifier();
     static optional<Object> classify(u_int64_t mac, optional<string> ssid);
+    map<u_int64_t, string> getCompanies();
+    set<string> getStopWords();
 };
 
 template<class T, class E>

@@ -110,13 +110,59 @@ void readAddressesFromAllFiles() {
     }
 }
 
+void readSSIDFromAllFiles() {
+    string paths[] = {
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/3dr_solo/dsss/frames.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/3dr_solo/wifi-ofdm-20/frames.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/fimi_x8_me_2020/1wifi_fc_5825000000_fs_12000000.pcm.result/frames.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/fimi_x8_me_2020/2wifi_fc_5825000000_fs_12000000.pcm.result/frames.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/fimi_x8_me_2020/wifi_fc_5825000000_fs_12000000.pcm.result/frames.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/hubsan_zino_2/Vega_2021-03-30_15-13-49-781_1_5785000000_10000000_11764706.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/nelk_b6/NELK_B6_Downlink_5220.213483MHz_46625.000000KHz.pcm.log/frames.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/parrot_bebop2/on_the_ground_gps-dsss/frames.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/parrot_bebop2/on_the_ground_gps-ofdm-20/frames.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/skydio2/3_Подключение_App,_калибровка,_попытка_полета-Unsafe_space/frames.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/skydio2/4_Взлет_и_посадка_в_офисе/frames.log"
+    };
+    vector<LogFrame> frames;
+    set<string> ssids;
+    for (string path : paths) {
+//        getAddressesFromFile(path);
+        cout << path << '\n';
+        readFromFile(path, frames);
+        for (LogFrame frame : frames) {
+            optional<string> ssid = frame.getSSID();
+            if (ssid.has_value()) {
+                ssids.insert(ssid.value());
+            }
+        }
+        for (string ssid : ssids) {
+            cout << ssid << '\n';
+        }
+        cout << '\n';
+        frames.clear();
+        ssids.clear();
+    }
+}
+
 int main(int argc, const char * argv[]) {
-    string path;
-    cout << "Введите путь до файла:\n";
-    cin >> path;
-    cout << '\n';
-    readFromLog(path);
+//    string path;
+//    cout << "Введите путь до файла:\n";
+//    cin >> path;
+//    cout << '\n';
+//    readFromLog(path);
+    
 //    readAddressesFromAllFiles();
-//    cout << macToHex("33:33:00:00:00:fb") << endl;
+    
+//    readSSIDFromAllFiles();
+    
+    Classifier classifier = Classifier();
+    set<string> companies;
+    for (auto &p : classifier.getCompanies()) {
+        companies.insert(p.second);
+    }
+    for (string str : companies) {
+        cout << str << '\n';
+    }
     return 0;
 }

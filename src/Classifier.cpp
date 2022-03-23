@@ -99,53 +99,42 @@ optional<Object> Classifier::classify(u_int64_t mac, optional<string> ssid) {
     return obj;
 }
 
+map<u_int64_t, string> Classifier::getCompanies() {
+    return macToCompany;
+}
+
+set<string> Classifier::getStopWords() {
+    return stopWords;
+}
+
 set<string> Classifier::stopWords = {
-    "skydio", "bebop", "drone"
+    "skydio", "bebop", "drone", "sololink",
 };
 
 map<u_int64_t, string> Classifier::macToCompany = {
-    {0x381D14000000, "Skydio Inc."},
+    {0x1831BF000000, "ASUSTek COMPUTER INC."}, // 3rd type
+    {0x708BCD000000, "ASUSTek COMPUTER INC."},
     
-    {0x00121C000000, "PARROT SA"},
-    {0x00267E000000, "PARROT SA"},
-    {0x9003B7000000, "PARROT SA"},
-    {0x903AE6000000, "PARROT SA"},
-    {0xA0143D000000, "PARROT SA"},
+    {0x74C63B000000, "AzureWave Technology Inc."}, // 3rd type
     
-    {0xEC5623000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
+    {0x6CDFFBE00000, "Beijing Fimi Technology Co., Ltd."}, // 1st type
     
-    {0x88DC96000000, "EnGenius Technologies, Inc."},
+    {0xE03E44000000, "Broadcom"}, // 3rd type
     
-    {0xE03E44000000, "Broadcom"},
-    
-    {0x6CDFFBE00000, "Beijing Fimi Technology Co., Ltd."},
-    
-    {0x98AAFC700000, "Shenzhen Hubsan Technology Co.，LTD."},
-    
-    {0x706582000000, "Suzhou Hanming Technologies Co., Ltd."},
-    
-    {0x10BD18000000, "Cisco Systems, Inc"},
+    {0x10BD18000000, "Cisco Systems, Inc"}, // 3rd type
     {0x5C5015000000, "Cisco Systems, Inc"},
     {0x6400F1000000, "Cisco Systems, Inc"},
     
-    {0x1831BF000000, "ASUSTek COMPUTER INC."},
-    {0x708BCD000000, "ASUSTek COMPUTER INC."},
+    {0xF07D68000000, "D-Link Corporation"}, // 3rd type
     
-    {0x28D244000000, "LCFC(HeFei) Electronics Technology co., ltd"},
+    {0x58D56E000000, "D-Link International"}, // 3rd type
+    {0xD8FEE3000000, "D-Link International"},
     
-    {0x3C970E000000, "Wistron InfoComm(Kunshan)Co.,Ltd."},
+    {0x88DC96000000, "EnGenius Technologies, Inc."}, // 3rd type
     
-    {0x4C5E0C000000, "Routerboard.com"},
+    {0xDAA119000000, "Google, Inc."}, // 3rd type
     
-    {0x58D56E000000, "D-Link International"},
-    
-    {0x5CE0C5000000, "Intel Corporate"},
-    {0x606720000000, "Intel Corporate"},
-    {0x6C8814000000, "Intel Corporate"},
-    
-    {0x74C63B000000, "AzureWave Technology Inc."},
-    
-    {0x001882000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
+    {0x001882000000, "HUAWEI TECHNOLOGIES CO.,LTD"}, // 3rd type
     {0x001E10000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
     {0x002568000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
     {0x00259E000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
@@ -155,24 +144,54 @@ map<u_int64_t, string> Classifier::macToCompany = {
     {0x004F1A000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
     {0x005A13000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
     {0x006151000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
+    {0xEC5623000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
+    
+    {0x48A472000000, "Intel Corporate"}, // 3rd
+    {0x48F17F000000, "Intel Corporate"},
+    {0x5CE0C5000000, "Intel Corporate"},
+    {0x606720000000, "Intel Corporate"},
+    {0x6C8814000000, "Intel Corporate"},
+    {0x7C7A91000000, "Intel Corporate"},
+    {0x7CB27D000000, "Intel Corporate"},
+    {0x94659C000000, "Intel Corporate"},
+    {0x98AF65000000, "Intel Corporate"},
+    {0xBCA8A6000000, "Intel Corporate"},
+    
+    {0x28D244000000, "LCFC(HeFei) Electronics Technology co., ltd"}, // 3rd type
+    
+    {0x9822EF000000, "Liteon Technology Corporation"}, // 3rd type
+    
+    {0x00121C000000, "PARROT SA"}, // 1st type
+    {0x00267E000000, "PARROT SA"},
+    {0x9003B7000000, "PARROT SA"},
+    {0x903AE6000000, "PARROT SA"},
+    {0xA0143D000000, "PARROT SA"},
+    
+    {0x88A73C000000, "Ragentek Technology Group"}, // 3rd type
+    
+    {0x4C5E0C000000, "Routerboard.com"}, // 3rd type
+    
+    {0x98AAFC700000, "Shenzhen Hubsan Technology Co.，LTD."}, // 1st type
+    
+    {0x381D14000000, "Skydio Inc."}, // 1st type
+    
+    {0x706582000000, "Suzhou Hanming Technologies Co., Ltd."}, // 3rd type
+    
+    {0xC46E1F000000, "TP-LINK TECHNOLOGIES CO.,LTD."}, // 3rd type
+    
+    {0x3C970E000000, "Wistron InfoComm(Kunshan)Co.,Ltd."}, // 3rd type
+    
+    {0x80AD16000000, "Xiaomi Communications Co Ltd"},  // 3st type
 
 //    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
 //    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
 //    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
 //    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
 //    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
-//    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
-//    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
-//    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
-//    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
-//    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
-//    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
-//    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
-//    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
-//    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
-//    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
-//    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
-//    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
-//    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
-//    {0x000000, "HUAWEI TECHNOLOGIES CO.,LTD"},
+};
+
+set<string> Classifier::droneCompanies = {
+    "Beijing Fimi Technology Co., Ltd.",
+    "PARROT SA",
+    "Skydio Inc.",
 };
