@@ -9,6 +9,7 @@
 #define Group_hpp
 
 #include <map>
+#include <set>
 #include <string>
 #include <sstream>
 #include "Utils.hpp"
@@ -44,12 +45,18 @@ public:
      */
     string toString();
     /**
-     * Append 1 to number of recieved / transmitted frames.
+     * Add 1 to amount of recieved / transmitted frames.
      *
      * @param client client's MAC-address.
      * @param received flag which show if frame was received or transmitted. If frame was received `received` equals True else False.
      */
     void addClient(const u_int64_t client, const bool received); // received = true - получено от ТД | received = false - отправлено к ТД
+    /**
+     * Return set of clients from current network.
+     *
+     * @return set of clients.
+     */
+    set<u_int64_t> getClients();
 };
 
 #endif /* Group_hpp */

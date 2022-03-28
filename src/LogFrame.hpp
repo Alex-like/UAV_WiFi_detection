@@ -115,7 +115,6 @@ public:
     
     string getData();
 };
-
 /**
  * Get frame information from string.
  *

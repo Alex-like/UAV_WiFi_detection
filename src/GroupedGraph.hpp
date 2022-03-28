@@ -58,6 +58,22 @@ public:
      * @return string representation of graph.
      */
     string toString();
+    /**
+     * Check existing MAC-address as host in networks.
+     *
+     * @param mac checking address.
+     *
+     * @return result of checking: "True" if one of network's host equal `mac` else "False".
+     */
+    bool checkExistAsHost(u_int64_t mac);
+    /**
+     * Check existing MAC-address as client in networks.
+     *
+     * @param mac checking address.
+     *
+     * @return result of checking: "True" if one of network's client equal `mac` else "False".
+     */
+    bool checkExistAsClient(u_int64_t mac);
 };
 
 #endif /* GroupedGraph_hpp */

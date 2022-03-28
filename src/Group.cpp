@@ -35,3 +35,11 @@ void Group::addClient(const u_int64_t client, const bool received) {
         clients[client].second += 1;
     }
 }
+
+set<u_int64_t> Group::getClients() {
+    set<u_int64_t> clients;
+    for (auto &p : this -> clients) {
+        clients.insert(p.first);
+    }
+    return clients;
+}

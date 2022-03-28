@@ -72,8 +72,6 @@ void getAddressesFromFile(string path) {
     }
 }
 
-// TODO merge `getAddressesFromFile` and `getAddressesFromStr`
-
 void getAddressesFromStr(string str, set<string> &macs) {
     const regex regex_MAC("[0-9A-Za-z]+(:[0-9A-Za-z]+){5}");
     const vector<smatch> mac{
@@ -97,4 +95,13 @@ u_int64_t macToHex(string mac) {
         }
     }
     return stoull(hex, 0, 16);
+}
+
+string str_tolower(string s) {
+    transform(s.begin(), s.end(), s.begin(), [](unsigned char c){ return tolower(c); });
+    return s;
+}
+
+bool checkExist(u_int64_t key, map<u_int64_t, string> &dict) {
+    return dict.find(key) != dict.end();
 }

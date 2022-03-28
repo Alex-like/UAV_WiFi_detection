@@ -15,6 +15,7 @@
 #include <sstream>
 #include <optional>
 #include "Utils.hpp"
+#include "GroupedGraph.hpp"
 
 using namespace std;
 
@@ -33,7 +34,6 @@ enum Type {
     /// Other device.
     Unknown
 };
-
 /**
  * Convert type to string.
  *
@@ -42,7 +42,6 @@ enum Type {
  * @return string representation of `dev`.
  */
 string toString(Type dev);
-
 /**
  * Features for detection.
  *
@@ -54,7 +53,6 @@ enum Feature {
     /// Name of frame which contains company's name.
     SSID
 };
-
 /**
  * Convert feature to string.
  *
@@ -83,18 +81,16 @@ private:
     static map<u_int64_t, string> macToCompany;
     static set<string> stopWords;
     static set<string> droneCompanies;
+    GroupedGraph network;
+    bool classifyByMac(u_int64_t mac, Object& obj);
+    bool classifyBySSID(optional<string> ssid, Object& obj);
 public:
-    Classifier();
-    static optional<Object> classify(u_int64_t mac, optional<string> ssid);
+    Classifier(GroupedGraph network_v = GroupedGraph());
+    void setNetwork(GroupedGraph network_v);
+    GroupedGraph getNetwork();
+    optional<Object> classify(u_int64_t mac, optional<string> ssid);
     map<u_int64_t, string> getCompanies();
     set<string> getStopWords();
 };
-
-template<class T, class E>
-bool checkExist(T key, map<T, E> &dict);
-
-void checkExistAndAddDevice(u_int64_t key, map<u_int64_t, string> &dict, Object &obj);
-
-void addDevice(u_int64_t key, map<u_int64_t, string> &dict, Object &obj);
 
 #endif /* Classifier_hpp */

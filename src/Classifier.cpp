@@ -16,8 +16,8 @@ string toString(Type dev) {
         
         case Drone:         return "Drone";
         case Controller:    return "Remote controller";
-        case AccessPoint:   return "Access point";
-        case Unknown:       return "Other device";
+        case AccessPoint:   return "Access point / Client / Something else";
+        case Unknown:       return "Unknown device";
     }
 }
 
@@ -59,42 +59,74 @@ void Object::addFeature(Feature ftr) {
     features.insert(ftr);
 }
 
-Classifier::Classifier() {}
-
-template<class T, class E>
-bool checkExist(T key, map<T, E> &dict) {
-    return dict.find(key) != dict.end();
+Classifier::Classifier(GroupedGraph network_v) {
+    network = network_v;
 }
 
-void checkExistAndAddDevice(u_int64_t key, map<u_int64_t, string> &dict, Object &obj) {
-    if (checkExist(key, dict)) {
-        addDevice(key, dict, obj);
+bool Classifier::classifyByMac(u_int64_t mac, Object& obj) {
+    u_int64_t mac_mask = 0x0;
+    if (!checkExist(mac & 0xffffff000000, macToCompany)) {
+        if (!checkExist(mac & 0xfffffff00000, macToCompany)) {
+            return false;
+        }
+        mac_mask = mac & 0xfffffff00000;
+    } else {
+        mac_mask = mac & 0xffffff000000;
     }
+    string company = macToCompany[mac_mask];
+    obj.setInfo(company);
+    if (droneCompanies.find(company) != droneCompanies.end()) {
+        obj.setDevice(Drone);
+        obj.addFeature(MAC);
+        return true;
+    }
+    if (network.checkExistAsHost(mac)) {
+        obj.setDevice(Drone);
+        obj.addFeature(MAC);
+        return true;
+    }
+    if (network.checkExistAsClient(mac)) {
+        obj.setDevice(Controller);
+        obj.addFeature(MAC);
+        return true;
+    }
+    obj.setDevice(AccessPoint);
+    obj.addFeature(MAC);
+    return true;
 }
 
-void addDevice(u_int64_t key, map<u_int64_t, string> &dict, Object &obj) {
-    obj.setInfo(dict[key]);
-    obj.setDevice(Drone);
-    obj.addFeature(MAC);
+bool Classifier::classifyBySSID(optional<string> ssid, Object& obj) {
+    if (!ssid.has_value()) {
+        return false;
+    }
+    for (string word : stopWords) {
+        if (str_tolower(ssid.value()).find(word) != string::npos) {
+            obj.setInfo(ssid.value());
+            obj.setDevice(Drone);
+            obj.addFeature(SSID);
+            return true;
+        }
+    }
+    return false;
+}
+
+void Classifier::setNetwork(GroupedGraph network_v) {
+    network = network_v;
+}
+
+GroupedGraph Classifier::getNetwork() {
+    return network;
 }
 
 optional<Object> Classifier::classify(u_int64_t mac, optional<string> ssid) {
     if (mac == BROADCAST) {
         return nullopt;
     }
+    
     Object obj = Object(mac);
-    checkExistAndAddDevice(mac & 0xffffff000000, macToCompany, obj);
-    checkExistAndAddDevice(mac & 0xfffffff00000, macToCompany, obj);
-    if (!ssid.has_value()) {
-        return obj;
-    }
-    for (string word : stopWords) {
-        if (ssid.value().find(word) != string::npos) {
-            obj.setInfo(ssid.value());
-            obj.setDevice(Drone);
-            obj.addFeature(SSID);
-            break;
-        }
+    
+    if (!classifyByMac(mac, obj) && !classifyBySSID(ssid, obj)) {
+        obj.setDevice(Unknown);
     }
     return obj;
 }

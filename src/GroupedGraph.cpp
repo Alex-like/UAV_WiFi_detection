@@ -39,3 +39,17 @@ string GroupedGraph::toString() {
     ss << Graph::toString();
     return ss.str();
 }
+
+bool GroupedGraph::checkExistAsHost(u_int64_t mac) {
+    return groups.find(mac) != groups.end();
+}
+
+bool GroupedGraph::checkExistAsClient(u_int64_t mac) {
+    for (auto &p : groups) {
+        set<u_int64_t> clients = p.second.getClients();
+        if (clients.find(mac) != clients.end()) {
+            return true;
+        }
+    }
+    return false;
+}
