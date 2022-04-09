@@ -105,3 +105,9 @@ string str_tolower(string s) {
 bool checkExist(u_int64_t key, map<u_int64_t, string> &dict) {
     return dict.find(key) != dict.end();
 }
+
+vector<LogFrame> filter(const vector<LogFrame>& vec, function<bool(LogFrame)> predicate) {
+    vector<LogFrame> result;
+    copy_if(begin(vec), end(vec), back_inserter(result), predicate);
+    return result;
+}

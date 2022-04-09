@@ -129,6 +129,52 @@ void classifyAllMacFromFrames(vector<LogFrame> &frames) {
     }
 }
 
+void printFramesTypes(vector<LogFrame> &frames) {
+    map<u_int64_t, map<u_int64_t, vector<string>>> types;
+    for (LogFrame frame : frames) {
+        optional<u_int64_t> tmp_num = frame.getTA();
+        if (!tmp_num.has_value())
+            continue;
+        u_int64_t TA = tmp_num.value();
+        tmp_num = frame.getRA();
+        if (!tmp_num.has_value())
+            continue;
+        u_int64_t RA = tmp_num.value();
+        optional<string> tmp_str = frame.getType();
+        if (!tmp_str.has_value())
+            continue;
+        string type = tmp_str.value();
+        types[TA][RA].emplace_back(type);
+    }
+    for (auto &p1 : types)
+        for (auto &p2 : p1.second) {
+            cout << p1.first << " -> " << p2.first << " : ";
+            for (string type : p2.second)
+                cout << type << ' ';
+            cout << '\n';
+        }
+    
+}
+
+void workWithDataFrames(vector<LogFrame> &frames) {
+    vector<LogFrame> dataFrames = filter(frames, [](LogFrame f) { return f.getType().has_value() && f.getType().value().compare(0, 4, "Data") == 0; });
+    map<u_int64_t, map<u_int64_t, u_int64_t>> transmitionsAmount;
+    for (LogFrame frame : dataFrames) {
+        optional<u_int64_t> tmp_num = frame.getTA();
+        if (!tmp_num.has_value())
+            continue;
+        u_int64_t TA = tmp_num.value();
+        tmp_num = frame.getRA();
+        if (!tmp_num.has_value())
+            continue;
+        u_int64_t RA = tmp_num.value();
+        transmitionsAmount[TA][RA]++;
+    }
+    for (auto &p1 : transmitionsAmount)
+        for (auto &p2 : p1.second)
+            cout << hexToMAC(decToHex(p1.first)) << " -> " << hexToMAC(decToHex(p2.first)) << " : " << p2.second << '\n';
+}
+
 void workWithDefiniteFile(function<void(vector<LogFrame> &)> action) {
     string path;
     cout << "Введите путь до файла:\n";
@@ -136,11 +182,12 @@ void workWithDefiniteFile(function<void(vector<LogFrame> &)> action) {
     cout << '\n';
     vector<LogFrame> frames;
     readFromFile(path, frames);
-    
+    action(frames);
 }
 
 void workWithAllFiles(function<void(vector<LogFrame> &)> action) {
     string paths[] = {
+        
     };
     vector<LogFrame> frames;
     for (string path : paths) {
@@ -153,7 +200,7 @@ void workWithAllFiles(function<void(vector<LogFrame> &)> action) {
 
 int main(int argc, const char * argv[]) {
 //    workWithDefiniteFile(getStatistics);
-    workWithAllFiles(classifyAllMacFromFrames);
-    
+//    workWithAllFiles(classifyAllMacFromFrames);
+    workWithAllFiles(workWithDataFrames);
     return 0;
 }

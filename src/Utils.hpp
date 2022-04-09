@@ -79,4 +79,6 @@ string str_tolower(string s);
  */
 bool checkExist(u_int64_t key, map<u_int64_t, string> &dict);
 
+vector<LogFrame> filter(const vector<LogFrame>& vec, function<bool(LogFrame)> predicate);
+
 #endif /* Utils_hpp */
