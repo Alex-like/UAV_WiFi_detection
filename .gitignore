@@ -112,8 +112,8 @@ fabric.properties
 # xcode
 # *.xcodeproj
 
-# data
-/data
+# drones
+data/drones
 
 # report.md and task.md
 task.md

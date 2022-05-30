@@ -25,8 +25,6 @@
  * @param to reference to filling vector.
  */
 void readFromFile(const string path, vector<LogFrame> &to);
-void printToFile(const string path, map<u_int64_t, vector<float>> &fom);
-tuple<vector<uint64_t>,vector<vector<float>>, vector<uint32_t>> readDataForKNNFromFile(const string path);
 /**
  * Convert decimal to hexadecimal number.
  *
@@ -94,5 +92,7 @@ vector<LogFrame> filter(const vector<LogFrame>& vec, function<bool(LogFrame)> pr
 string toString(const vector<u_int64_t> &vec);
 string toString(const vector<float> &vec);
 float fpow(float base, int exp);
+void printToFile(const string path, map<u_int64_t, vector<float>> &fom);
+tuple<vector<uint64_t>,vector<vector<float>>, vector<uint32_t>> readDataForKNNFromFile(const string path);
 
 #endif /* Utils_hpp */

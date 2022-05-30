@@ -72,15 +72,26 @@ void classifyAllMacFromFrames(vector<LogFrame> &frames);
  * @param frames reference to stream of frames.
  */
 void printFramesTypes(vector<LogFrame> &frames);
+/**
+ * Filter data-frames and process them.
+ *
+ * @param frames reference to stream of frames.
+ */
+void workWithDataFrames(vector<LogFrame> &frames);
+/**
+ * Process single file with frames.
+ *
+ * @param action worker with frames.
+ */
+void workWithDefiniteFile(function<void(vector<LogFrame> &)> action);
+/**
+ * Process all files from source.
+ *
+ * @param action worker with frames for each file.
+ */
+void workWithAllFiles(function<void(vector<LogFrame> &)> action);
 
-/* USELESS
-enum PivotFingerprint {
-    SingePacket = 1,
-    TwoPackets,
-    ThreePackets
-};
-string toString(PivotFingerprint fp);
-*/
+void workWithModel();
 
 class Packet {
 private:
@@ -122,27 +133,5 @@ public:
     string toString();
     vector<float> toVector();
 };
-
-/**
- * Filter data-frames and process them.
- *
- * @param frames reference to stream of frames.
- */
-void workWithDataFrames(vector<LogFrame> &frames);
-
-void workWithModel();
-
-/**
- * Process single file with frames.
- *
- * @param action worker with frames.
- */
-void workWithDefiniteFile(function<void(vector<LogFrame> &)> action);
-/**
- * Process all files from source.
- *
- * @param action worker with frames for each file.
- */
-void workWithAllFiles(function<void(vector<LogFrame> &)> action);
 
 #endif /* MainUtils_hpp */

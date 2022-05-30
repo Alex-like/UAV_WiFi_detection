@@ -41,6 +41,7 @@
 		7E4F0C4E27C2F884003B797F /* libs_dependences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libs_dependences.txt; sourceTree = "<group>"; };
 		7E667EA0284244560027F8FF /* KNN.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KNN.cpp; sourceTree = "<group>"; };
 		7E667EA1284244560027F8FF /* KNN.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = KNN.hpp; sourceTree = "<group>"; };
+		7E667EA328454CF70027F8FF /* data.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = data.log; sourceTree = "<group>"; };
 		7E71F0F027B9455C005F5E8C /* UAV_WiFi_detection */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UAV_WiFi_detection; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E71F0F327B9455C005F5E8C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		7E71F12E27B95538005F5E8C /* LogFrame.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LogFrame.cpp; sourceTree = "<group>"; };
@@ -158,6 +159,7 @@
 		7EAFE3BF27E219E200B1F807 /* data */ = {
 			isa = PBXGroup;
 			children = (
+				7E667EA328454CF70027F8FF /* data.log */,
 				7EAFE3C027E219E200B1F807 /* drones */,
 			);
 			path = data;
