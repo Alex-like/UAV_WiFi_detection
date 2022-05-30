@@ -15,6 +15,7 @@
 #include <fstream>
 #include <regex>
 #include <sstream>
+#include <tuple>
 #include "LogFrame.hpp"
 
 /**
@@ -24,6 +25,8 @@
  * @param to reference to filling vector.
  */
 void readFromFile(const string path, vector<LogFrame> &to);
+void printToFile(const string path, map<u_int64_t, vector<float>> &fom);
+tuple<vector<uint64_t>,vector<vector<float>>, vector<uint32_t>> readDataForKNNFromFile(const string path);
 /**
  * Convert decimal to hexadecimal number.
  *
@@ -78,7 +81,18 @@ string str_tolower(string s);
  * @return "True" if `dict` contains `key`else return "False".
  */
 bool checkExist(u_int64_t key, map<u_int64_t, string> &dict);
-
+/**
+ * Filter vector of LogFrames by using definite predicate.
+ *
+ * @param vec reference to vector with LogFrames.
+ * @param predicate boolean function for filtering.
+ *
+ * @return vector of LogFrames which was accepted.
+ */
 vector<LogFrame> filter(const vector<LogFrame>& vec, function<bool(LogFrame)> predicate);
+
+string toString(const vector<u_int64_t> &vec);
+string toString(const vector<float> &vec);
+float fpow(float base, int exp);
 
 #endif /* Utils_hpp */

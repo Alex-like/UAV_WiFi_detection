@@ -52,6 +52,12 @@ private:
     optional<u_int64_t> RA;
     /// Correctness of frame.
     bool FCS;
+    /// More fragments flag.
+    optional<bool> moreFragments;
+    /// Sequence number.
+    optional<u_int64_t> seqNum;
+    /// Fragment number.
+    optional<u_int64_t> fragNum;
 public:
     /**
      * Basic constructor.
@@ -69,7 +75,7 @@ public:
      * @param TA_v transmitter address if frame is correct and has it.
      * @param RA_v receiver address if frame is correct and has it.
      */
-    LogFrame(u_int64_t ind_v, float Offset_v, string BW_v, string MCS_v, int Size_v, string Frame_v, string info_v, bool FCS_v, optional<string> Type_v, optional<string> SSID_v,optional<u_int64_t> TA_v, optional<u_int64_t> RA_v);
+    LogFrame(u_int64_t ind_v, float Offset_v, string BW_v, string MCS_v, int Size_v, string Frame_v, string info_v, bool FCS_v, optional<string> Type_v, optional<string> SSID_v,optional<u_int64_t> TA_v, optional<u_int64_t> RA_v, optional<bool> moreFragments_v, optional<u_int64_t> seqNum_v, optional<u_int64_t> fragNum_v);
     /**
      * Get correctness of frame.
      *
@@ -114,6 +120,11 @@ public:
     optional<string> getSSID();
     
     string getData();
+    int getSize();
+    bool getMoreFrags();
+    u_int64_t getSeqNum();
+    u_int64_t getFragNum();
+    float getOffset();
 };
 /**
  * Get frame information from string.

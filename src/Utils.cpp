@@ -31,6 +31,61 @@ void readFromFile(const string path, vector<LogFrame> &to) {
     in.close();
 }
 
+void printToFile(const string path, map<u_int64_t, vector<float>> &from) {
+    ofstream out(path, ios::app);
+    if (out.is_open()) {
+        for (auto &p : from)
+            out << hexToMAC(decToHex(p.first)) << " : " << toString(p.second) << '\n';
+    }
+    out.close();
+}
+
+tuple<vector<uint64_t>,vector<vector<float>>, vector<uint32_t>> readDataForKNNFromFile(const string path) {
+    vector<uint32_t> classes;
+    vector<uint64_t> macs;
+    vector<vector<float>> data;
+    ifstream in(path);
+    if (in.is_open()) {
+        string line;
+        while (getline(in, line, '\n')) {
+            // skip empty string
+            smatch match;
+            if (regex_match(line, match, regex("^\\s*$"))) {
+                continue;
+            }
+            uint64_t mac;
+            vector<float> features;
+            uint32_t cl;
+            uint32_t pos = 0;
+            // parse
+            const regex regexMAC("([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+)");
+            const regex regexClass(": ([0-9]+) :");
+            const regex regexFeature("([0-9e.-]+)");
+            if (regex_search(line, match, regexMAC)) {
+                string hex = match[1].str() + match[2].str() + match[3].str() + match[4].str() + match[5].str() + match[6].str();
+                pos += hex.length() + 5;
+                mac = stoull(hex, 0, 16);
+            }
+            if (regex_search(line, match, regexClass)) {
+                string dec = match[1].str();
+                pos += dec.length() + 4;
+                cl = stoi(dec, 0);
+            }
+            string subString = line.substr(pos);
+            const vector<string> matches{
+                sregex_token_iterator{subString.begin(), subString.end(), regexFeature, 1}, // Mark `0` here i.e. whole regex match
+                sregex_token_iterator{}
+            };
+            for (const string& num : matches)
+                features.emplace_back(stof(num));
+            macs.emplace_back(mac);
+            data.emplace_back(features);
+            classes.emplace_back(cl);
+        }
+    }
+    return make_tuple(macs, data, classes);
+}
+
 string decToHex(const u_int64_t dec) {
     stringstream ss;
     ss << std::hex << dec;
@@ -110,4 +165,26 @@ vector<LogFrame> filter(const vector<LogFrame>& vec, function<bool(LogFrame)> pr
     vector<LogFrame> result;
     copy_if(begin(vec), end(vec), back_inserter(result), predicate);
     return result;
+}
+
+string toString(const vector<u_int64_t> &vec) {
+    stringstream ss;
+    for (auto &el : vec)
+        ss << el << ' ';
+    return ss.str();
+}
+
+string toString(const vector<float> &vec) {
+    stringstream ss;
+    for (auto &el : vec)
+        ss << el << ' ';
+    return ss.str();
+}
+
+float fpow(float base, int exp) {
+    if (exp == 0) return 1.0;
+    if (exp == 1) return base;
+    float tmp = fpow(base, exp / 2);
+    tmp *= tmp;
+    return exp % 2 != 0 ? tmp * base : tmp;
 }
