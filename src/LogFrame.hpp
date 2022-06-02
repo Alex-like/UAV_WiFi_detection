@@ -118,21 +118,136 @@ public:
      * @return SSID if frame is correct and has it.
      */
     optional<string> getSSID();
-    
+    /**
+     * Get frame Data in hexadecimal representation.
+     *
+     * @return bits of Data.
+     */
     string getData();
+    /**
+     * Get frame size.
+     *
+     * @return number of transmited bytes.
+     */
     int getSize();
+    /**
+     * Get flag of existing more fragments of current frame.
+     *
+     * @return MoreFragments flag.
+     */
     bool getMoreFrags();
+    /**
+     * Get sequence number of frame.
+     *
+     * @return sequence number.
+     */
     u_int64_t getSeqNum();
+    /**
+     * Get fragment number of frame.
+     *
+     * @return fragment number.
+     */
     u_int64_t getFragNum();
+    /**
+     * Get time offset of current frame.
+     *
+     * @return time offset.
+     */
     float getOffset();
+    /**
+     * Sst offset value.
+     *
+     * @param offset value.
+     */
+    void setOffset(const float offset);
+    /**
+     * Set BW value.
+     *
+     * @param bw value.
+     */
+    void setBW(const string bw);
+    /**
+     * Set MCS value.
+     *
+     * @param mcs value.
+     */
+    void setMCS(const string mcs);
+    /**
+     * Set Size of frame.
+     *
+     * @param size value.
+     */
+    void setSize(const int size);
+    /**
+     * Set bits representation of decoded information.
+     *
+     * @param frame hexadecimal string.
+     */
+    void setFrame(const string frame);
+    /**
+     * Set decoded data.
+     *
+     * @param info decoded frame.
+     */
+    void setInfo(const string info);
+    /**
+     * Set frame type.
+     *
+     * @param type of frame.
+     */
+    void setType(const string type);
+    /**
+     * Set SSID of frame.
+     *
+     * @param ssid string.
+     */
+    void setSSID(const string ssid);
+    /**
+     * Set TA of frame.
+     *
+     * @param ta MAC-address.
+     */
+    void setTA(const u_int64_t ta);
+    /**
+     * Set RA of frame.
+     *
+     * @param ra MAC-address.
+     */
+    void setRA(const u_int64_t ra);
+    /**
+     * Set FCS flag of frame.
+     *
+     * @param fcs flag.
+     */
+    void setFCS(const bool fcs);
+    /**
+     * Set MoreFragments flag of frame.
+     *
+     * @param moreFrags flag.
+     */
+    void setMoreFrags(const bool moreFrags);
+    /**
+     * Set Seqnum of frame.
+     *
+     * @param seqNum value.
+     */
+    void setSeqNum(const u_int64_t seqNum);
+    /**
+     * Set Fragnum of frame.
+     *
+     * @param fragNum value.
+     */
+    void setFragNum(const u_int64_t fragNum);
 };
 /**
  * Get frame information from string.
  *
  * @param lines reference to separated lines which contain information.
+ * @param hasHeader flag to indicate existence of header.
+ * @param hasBody flag to indicate existence of decoded body.
  *
  * @return extracted information about frame.
  */
-LogFrame parse(const vector<string> &lines);
+LogFrame parse(const vector<string> &lines, const bool hasHeader = true, const bool hasBody = true);
 
 #endif /* LogFrame_hpp */

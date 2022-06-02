@@ -338,16 +338,16 @@ void workWithDataFrames(vector<LogFrame> &frames) {
 void workWithModel() {
     auto [macs, data, classes] = readDataForKNNFromFile("/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/data.log");
     normalize(data);
-    uint32_t classCnt = 0;
-    for (const uint32_t cl : classes)
+    u_int32_t classCnt = 0;
+    for (const u_int32_t cl : classes)
         classCnt = max(classCnt, cl);
-    vector<vector<uint32_t>> targets = oneHotEncoding(classes, classCnt);
+    vector<vector<u_int32_t>> targets = oneHotEncoding(classes, classCnt);
     LeaveOneOut lvoModel;
     lvoModel.fit(data, targets);
     
     // TEST
     vector<float> query = {601, 0.967794, 0.113525, 251.097, 63049.8, 502.418, 252424, -0.0076051, 3.18499e-10, -3.91268e-08, 82, 621, 441.167, 601, 20, 22.6925, 514.949, 34.301, 1176.56, 0.00741055, 4.72455e-06, 2.66138e-05, 1.2609, 57.3001, 26.5428, 25.2708, 24.0099,};
-    uint32_t expectedClass = 1;
+    u_int32_t expectedClass = 1;
     cout << "Test : actual(" << lvoModel.predict(query) << "), expected(" << expectedClass << ")\n";
 }
 

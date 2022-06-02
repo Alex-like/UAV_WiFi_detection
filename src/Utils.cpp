@@ -40,9 +40,9 @@ void printToFile(const string path, map<u_int64_t, vector<float>> &from) {
     out.close();
 }
 
-tuple<vector<uint64_t>,vector<vector<float>>, vector<uint32_t>> readDataForKNNFromFile(const string path) {
-    vector<uint32_t> classes;
-    vector<uint64_t> macs;
+tuple<vector<u_int64_t>,vector<vector<float>>, vector<u_int32_t>> readDataForKNNFromFile(const string path) {
+    vector<u_int32_t> classes;
+    vector<u_int64_t> macs;
     vector<vector<float>> data;
     ifstream in(path);
     if (in.is_open()) {
@@ -53,10 +53,10 @@ tuple<vector<uint64_t>,vector<vector<float>>, vector<uint32_t>> readDataForKNNFr
             if (regex_match(line, match, regex("^\\s*$"))) {
                 continue;
             }
-            uint64_t mac;
+            u_int64_t mac;
             vector<float> features;
-            uint32_t cl;
-            uint32_t pos = 0;
+            u_int32_t cl;
+            u_int32_t pos = 0;
             // parse
             const regex regexMAC("([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+)");
             const regex regexClass(": ([0-9]+) :");
@@ -93,7 +93,7 @@ string decToHex(const u_int64_t dec) {
 }
 
 string hexToMAC(string hex) {
-    uint8_t len = hex.length();
+    u_int8_t len = hex.length();
     if (len < 12) {
         for (int i = 0; i < 12 - len; i++) {
             hex = '0' + hex;
@@ -152,7 +152,7 @@ u_int64_t macToHex(string mac) {
     return stoull(hex, 0, 16);
 }
 
-string str_tolower(string s) {
+string strToLower(string s) {
     transform(s.begin(), s.end(), s.begin(), [](unsigned char c){ return tolower(c); });
     return s;
 }

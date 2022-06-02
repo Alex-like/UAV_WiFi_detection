@@ -42,6 +42,24 @@
 		7E667EA0284244560027F8FF /* KNN.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KNN.cpp; sourceTree = "<group>"; };
 		7E667EA1284244560027F8FF /* KNN.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = KNN.hpp; sourceTree = "<group>"; };
 		7E667EA328454CF70027F8FF /* data.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = data.log; sourceTree = "<group>"; };
+		7E667EA72847A9DE0027F8FF /* frames.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = frames.pcap; sourceTree = "<group>"; };
+		7E667EA82847A9DE0027F8FF /* frames_phy.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames_phy.log; sourceTree = "<group>"; };
+		7E667EA92847A9DE0027F8FF /* frames_parser.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames_parser.log; sourceTree = "<group>"; };
+		7E667EAC2847A9DE0027F8FF /* frames.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = frames.pcap; sourceTree = "<group>"; };
+		7E667EAD2847A9DE0027F8FF /* frames_phy.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames_phy.log; sourceTree = "<group>"; };
+		7E667EAE2847A9DE0027F8FF /* frames_parser.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames_parser.log; sourceTree = "<group>"; };
+		7E667EB12847A9DE0027F8FF /* frames.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = frames.pcap; sourceTree = "<group>"; };
+		7E667EB22847A9DE0027F8FF /* frames_phy.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames_phy.log; sourceTree = "<group>"; };
+		7E667EB32847A9DE0027F8FF /* frames_parser.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames_parser.log; sourceTree = "<group>"; };
+		7E667EB62847A9DE0027F8FF /* frames.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = frames.pcap; sourceTree = "<group>"; };
+		7E667EB72847A9DE0027F8FF /* frames_phy.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames_phy.log; sourceTree = "<group>"; };
+		7E667EB82847A9DE0027F8FF /* frames_parser.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames_parser.log; sourceTree = "<group>"; };
+		7E667EBB2847A9DE0027F8FF /* frames.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = frames.pcap; sourceTree = "<group>"; };
+		7E667EBC2847A9DE0027F8FF /* frames_phy.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames_phy.log; sourceTree = "<group>"; };
+		7E667EBD2847A9DE0027F8FF /* frames_parser.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames_parser.log; sourceTree = "<group>"; };
+		7E667EC02847A9DE0027F8FF /* frames.pcap */ = {isa = PBXFileReference; lastKnownFileType = file; path = frames.pcap; sourceTree = "<group>"; };
+		7E667EC12847A9DE0027F8FF /* frames_phy.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames_phy.log; sourceTree = "<group>"; };
+		7E667EC22847A9DE0027F8FF /* frames_parser.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frames_parser.log; sourceTree = "<group>"; };
 		7E71F0F027B9455C005F5E8C /* UAV_WiFi_detection */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UAV_WiFi_detection; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E71F0F327B9455C005F5E8C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		7E71F12E27B95538005F5E8C /* LogFrame.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LogFrame.cpp; sourceTree = "<group>"; };
@@ -106,6 +124,127 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7E667EA42847A9DE0027F8FF /* part2 */ = {
+			isa = PBXGroup;
+			children = (
+				7E667EA52847A9DE0027F8FF /* dji_tello */,
+				7E667EAA2847A9DE0027F8FF /* syma_x5_uw */,
+				7E667EAF2847A9DE0027F8FF /* wltoys_q242 */,
+				7E667EB42847A9DE0027F8FF /* xiaomi_mi_drone_4k */,
+				7E667EB92847A9DE0027F8FF /* syma_x5_sw */,
+				7E667EBE2847A9DE0027F8FF /* dji_mavic_air */,
+			);
+			path = part2;
+			sourceTree = "<group>";
+		};
+		7E667EA52847A9DE0027F8FF /* dji_tello */ = {
+			isa = PBXGroup;
+			children = (
+				7E667EA62847A9DE0027F8FF /* 18_01_45 2427MHz 23312.5KHz.pcm */,
+			);
+			path = dji_tello;
+			sourceTree = "<group>";
+		};
+		7E667EA62847A9DE0027F8FF /* 18_01_45 2427MHz 23312.5KHz.pcm */ = {
+			isa = PBXGroup;
+			children = (
+				7E667EA72847A9DE0027F8FF /* frames.pcap */,
+				7E667EA82847A9DE0027F8FF /* frames_phy.log */,
+				7E667EA92847A9DE0027F8FF /* frames_parser.log */,
+			);
+			path = "18_01_45 2427MHz 23312.5KHz.pcm";
+			sourceTree = "<group>";
+		};
+		7E667EAA2847A9DE0027F8FF /* syma_x5_uw */ = {
+			isa = PBXGroup;
+			children = (
+				7E667EAB2847A9DE0027F8FF /* 10_31_11 2439.346405MHz 93250.000000KHz.pcm */,
+			);
+			path = syma_x5_uw;
+			sourceTree = "<group>";
+		};
+		7E667EAB2847A9DE0027F8FF /* 10_31_11 2439.346405MHz 93250.000000KHz.pcm */ = {
+			isa = PBXGroup;
+			children = (
+				7E667EAC2847A9DE0027F8FF /* frames.pcap */,
+				7E667EAD2847A9DE0027F8FF /* frames_phy.log */,
+				7E667EAE2847A9DE0027F8FF /* frames_parser.log */,
+			);
+			path = "10_31_11 2439.346405MHz 93250.000000KHz.pcm";
+			sourceTree = "<group>";
+		};
+		7E667EAF2847A9DE0027F8FF /* wltoys_q242 */ = {
+			isa = PBXGroup;
+			children = (
+				7E667EB02847A9DE0027F8FF /* 10_39_38 2439.346405MHz 93250.000000KHz(Video).pcm */,
+			);
+			path = wltoys_q242;
+			sourceTree = "<group>";
+		};
+		7E667EB02847A9DE0027F8FF /* 10_39_38 2439.346405MHz 93250.000000KHz(Video).pcm */ = {
+			isa = PBXGroup;
+			children = (
+				7E667EB12847A9DE0027F8FF /* frames.pcap */,
+				7E667EB22847A9DE0027F8FF /* frames_phy.log */,
+				7E667EB32847A9DE0027F8FF /* frames_parser.log */,
+			);
+			path = "10_39_38 2439.346405MHz 93250.000000KHz(Video).pcm";
+			sourceTree = "<group>";
+		};
+		7E667EB42847A9DE0027F8FF /* xiaomi_mi_drone_4k */ = {
+			isa = PBXGroup;
+			children = (
+				7E667EB52847A9DE0027F8FF /* 13_40_03 5765.117978MHz 13321.428571KHz.pcm */,
+			);
+			path = xiaomi_mi_drone_4k;
+			sourceTree = "<group>";
+		};
+		7E667EB52847A9DE0027F8FF /* 13_40_03 5765.117978MHz 13321.428571KHz.pcm */ = {
+			isa = PBXGroup;
+			children = (
+				7E667EB62847A9DE0027F8FF /* frames.pcap */,
+				7E667EB72847A9DE0027F8FF /* frames_phy.log */,
+				7E667EB82847A9DE0027F8FF /* frames_parser.log */,
+			);
+			path = "13_40_03 5765.117978MHz 13321.428571KHz.pcm";
+			sourceTree = "<group>";
+		};
+		7E667EB92847A9DE0027F8FF /* syma_x5_sw */ = {
+			isa = PBXGroup;
+			children = (
+				7E667EBA2847A9DE0027F8FF /* 10_24_27 2439.346405MHz 93250.000000KHz.pcm */,
+			);
+			path = syma_x5_sw;
+			sourceTree = "<group>";
+		};
+		7E667EBA2847A9DE0027F8FF /* 10_24_27 2439.346405MHz 93250.000000KHz.pcm */ = {
+			isa = PBXGroup;
+			children = (
+				7E667EBB2847A9DE0027F8FF /* frames.pcap */,
+				7E667EBC2847A9DE0027F8FF /* frames_phy.log */,
+				7E667EBD2847A9DE0027F8FF /* frames_parser.log */,
+			);
+			path = "10_24_27 2439.346405MHz 93250.000000KHz.pcm";
+			sourceTree = "<group>";
+		};
+		7E667EBE2847A9DE0027F8FF /* dji_mavic_air */ = {
+			isa = PBXGroup;
+			children = (
+				7E667EBF2847A9DE0027F8FF /* handshake-work-goodbye.pcm */,
+			);
+			path = dji_mavic_air;
+			sourceTree = "<group>";
+		};
+		7E667EBF2847A9DE0027F8FF /* handshake-work-goodbye.pcm */ = {
+			isa = PBXGroup;
+			children = (
+				7E667EC02847A9DE0027F8FF /* frames.pcap */,
+				7E667EC12847A9DE0027F8FF /* frames_phy.log */,
+				7E667EC22847A9DE0027F8FF /* frames_parser.log */,
+			);
+			path = "handshake-work-goodbye.pcm";
+			sourceTree = "<group>";
+		};
 		7E71F0E727B9455C005F5E8C = {
 			isa = PBXGroup;
 			children = (
@@ -168,6 +307,7 @@
 		7EAFE3C027E219E200B1F807 /* drones */ = {
 			isa = PBXGroup;
 			children = (
+				7E667EA42847A9DE0027F8FF /* part2 */,
 				7EAFE3C127E219E200B1F807 /* skydio2 */,
 				7EAFE3CA27E219E200B1F807 /* nelk_b6 */,
 				7EAFE3D327E219E200B1F807 /* 3dr_solo */,

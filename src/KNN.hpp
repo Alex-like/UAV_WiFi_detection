@@ -24,25 +24,25 @@ float dist(const vector<int> &a, const vector <int> &b, string distType);
 
 float kernel(float x, const string kernelType);
 
-float calcFscore(const vector<vector<uint64_t>>& cm);
+float calcFscore(const vector<vector<u_int64_t>>& cm);
 
 float nadarayWatson(const vector<vector<float>>& data,
-                    const vector<vector<uint32_t>> targets,
+                    const vector<vector<u_int32_t>> targets,
                     float h,
                     const vector<float>& obj,
                     function<float(vector<float>&, vector<float>&)> dist,
                     function<float(float)> kernel);
 
-vector<vector<uint64_t>> regression(const vector<vector<float>>& data,
-                                    const vector<vector<uint32_t>> targets,
+vector<vector<u_int64_t>> regression(const vector<vector<float>>& data,
+                                    const vector<vector<u_int32_t>> targets,
                                     const function<float(vector<float>&, vector<float>&)> dist,
                                     function<float(float)> kernel,
                                     const string windType,
-                                    const uint64_t wind);
+                                    const u_int64_t wind);
 
 void normalize(vector<vector<float>> &df);
  
-vector<vector<uint32_t>> oneHotEncoding(const vector<uint32_t> &classes, const uint32_t classCnt);
+vector<vector<u_int32_t>> oneHotEncoding(const vector<u_int32_t> &classes, const u_int32_t classCnt);
 
 class LeaveOneOut {
 private:
@@ -56,8 +56,8 @@ private:
     string bestKernelType;
     string bestWindowType;
 public:
-    void fit(const vector<vector<float>>& data, const vector<vector<uint32_t>>& targets);
-    uint32_t predict(const vector<float>& query);
+    void fit(const vector<vector<float>>& data, const vector<vector<u_int32_t>>& targets);
+    u_int32_t predict(const vector<float>& query);
 };
 
 

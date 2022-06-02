@@ -83,7 +83,63 @@ float LogFrame::getOffset() {
     return Offset;
 }
 
-LogFrame parse(const vector<string> &lines) {
+void LogFrame::setOffset(const float offset) {
+    this->Offset = offset;
+}
+
+void LogFrame::setBW(const string bw) {
+    this->BW = bw;
+}
+
+void LogFrame::setMCS(const string mcs) {
+    this->MCS = mcs;
+}
+
+void LogFrame::setSize(const int size) {
+    this->Size = size;
+}
+
+void LogFrame::setFrame(const string frame) {
+    this->Frame = frame;
+}
+
+void LogFrame::setInfo(const string info) {
+    this->info = info;
+}
+
+void LogFrame::setType(const string type) {
+    this->Type = type;
+}
+
+void LogFrame::setSSID(const string ssid) {
+    this->SSID = ssid;
+}
+
+void LogFrame::setTA(const u_int64_t ta) {
+    this->TA = ta;
+}
+
+void LogFrame::setRA(const u_int64_t ra) {
+    this->RA = ra;
+}
+
+void LogFrame::setFCS(const bool fcs) {
+    this->FCS = fcs;
+}
+
+void LogFrame::setMoreFrags(const bool moreFrags) {
+    this->moreFragments = moreFrags;
+}
+
+void LogFrame::setSeqNum(const u_int64_t seqNum) {
+    this->seqNum = seqNum;
+}
+
+void LogFrame::setFragNum(const u_int64_t fragNum) {
+    this->fragNum = fragNum;
+}
+
+LogFrame parse(const vector<string> &lines, const bool hasHeader, const bool hasBody) {
     // init
     float Offset_v = 0.0;
     string BW_v = "", MCS_v = "", Frame_v = "", info_v = "";
@@ -96,8 +152,9 @@ LogFrame parse(const vector<string> &lines) {
     // parse
     const string MAC_template = "([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+)";
     // regular expressions for parsing DataFrame
-    const regex regex_line1("(\\d+)\\s+Offset=(\\d+\\.\\d+),BW=(\\w+),MCS=(.+),Size=(\\d+)");
-    const regex regex_line2("Frame=([0-9a-fA-F]+)");
+    const regex regex_ind("^(\\d+)\\s+");
+    const regex regex_line1("Offset=(\\d+\\.\\d+),BW=(\\w+),MCS=(.+),Size=(\\d+)");
+    const regex regex_line2("Frame=([0-9a-fA-F]+)|Bits=([0-9a-fA-F]+)");
     const regex regex_FCS("FCS=Fail");
     const regex regex_Type("Type=([^,]+),");
     const regex regex_MoreFrags("More Fragments=(\\d+)");
@@ -107,51 +164,58 @@ LogFrame parse(const vector<string> &lines) {
     const regex regex_Seqnum("Seqnum=(\\d+)");
     const regex regex_Fragnum("Fragnum=(\\d+)");
     
-    smatch line1_groups;
-    if (regex_search(lines[0], line1_groups, regex_line1)) {
-        ind_v = stoull(line1_groups[1]);
-        Offset_v = stof(line1_groups[2]);
-        BW_v = line1_groups[3];
-        MCS_v = line1_groups[4];
-        Size_v = stoi(line1_groups[5]);
+    smatch ind;
+    if (regex_search(lines[0], ind, regex_ind))
+        ind_v = stoull(ind[1]);
+    
+    if (hasHeader) {
+        smatch line1_groups;
+        if (regex_search(lines[0], line1_groups, regex_line1)) {
+            Offset_v = stof(line1_groups[1]);
+            BW_v = line1_groups[2];
+            MCS_v = line1_groups[3];
+            Size_v = stoi(line1_groups[4]);
+        }
+        
+        smatch line2_groups;
+        if (regex_search(lines[hasBody ? 1 : 0], line2_groups, regex_line2)) {
+            Frame_v = line2_groups[hasBody ? 1 : 2];
+        }
     }
     
-    smatch line2_groups;
-    if (regex_search(lines[1], line2_groups, regex_line2)) {
-        Frame_v = line2_groups[1];
-    }
-    
-    smatch line3_groups;
-    if (!regex_search(lines[2], line3_groups, regex_FCS)) {
-        FCS_v = true;
-    }
-    info_v = lines[2];
-    if (FCS_v && regex_search(info_v, line3_groups, regex_Type)) {
-        Type_v = line3_groups[1];
-    }
-    if (FCS_v && regex_search(info_v, line3_groups, regex_SSID)) {
-        SSID_v = line3_groups[1];
-    }
-    if (FCS_v && regex_search(info_v, line3_groups, regex_TA)) {
-        string hex = line3_groups[1].str() + line3_groups[2].str() + line3_groups[3].str() + line3_groups[4].str() + line3_groups[5].str() + line3_groups[6].str();
-        TA_v = stoull(hex, 0, 16);
-    }
-    if (FCS_v && regex_search(info_v, line3_groups, regex_RA)) {
-        string hex = line3_groups[1].str() + line3_groups[2].str() + line3_groups[3].str() + line3_groups[4].str() + line3_groups[5].str() + line3_groups[6].str();
-        RA_v = stoull(hex, 0, 16);
-    }
-    if (FCS_v && regex_search(info_v, line3_groups, regex_MoreFrags)) {
-        string flag = line3_groups[1].str();
-        int tmp = stoi(flag);
-        moreFrags = tmp > 0 ? true : false;
-    }
-    if (FCS_v && regex_search(info_v, line3_groups, regex_Seqnum)) {
-        string tmp = line3_groups[1].str();
-        seqNum = stoull(tmp);
-    }
-    if (FCS_v && regex_search(info_v, line3_groups, regex_Fragnum)) {
-        string tmp = line3_groups[1].str();
-        fragNum = stoull(tmp);
+    if (hasBody) {
+        smatch line3_groups;
+        if (!regex_search(lines[hasHeader ? 2 : 0], line3_groups, regex_FCS)) {
+            FCS_v = true;
+        }
+        info_v = lines[hasHeader ? 2 : 0];
+        if (FCS_v && regex_search(info_v, line3_groups, regex_Type)) {
+            Type_v = line3_groups[1];
+        }
+        if (FCS_v && regex_search(info_v, line3_groups, regex_SSID)) {
+            SSID_v = line3_groups[1];
+        }
+        if (FCS_v && regex_search(info_v, line3_groups, regex_TA)) {
+            string hex = line3_groups[1].str() + line3_groups[2].str() + line3_groups[3].str() + line3_groups[4].str() + line3_groups[5].str() + line3_groups[6].str();
+            TA_v = stoull(hex, 0, 16);
+        }
+        if (FCS_v && regex_search(info_v, line3_groups, regex_RA)) {
+            string hex = line3_groups[1].str() + line3_groups[2].str() + line3_groups[3].str() + line3_groups[4].str() + line3_groups[5].str() + line3_groups[6].str();
+            RA_v = stoull(hex, 0, 16);
+        }
+        if (FCS_v && regex_search(info_v, line3_groups, regex_MoreFrags)) {
+            string flag = line3_groups[1].str();
+            int tmp = stoi(flag);
+            moreFrags = tmp > 0 ? true : false;
+        }
+        if (FCS_v && regex_search(info_v, line3_groups, regex_Seqnum)) {
+            string tmp = line3_groups[1].str();
+            seqNum = stoull(tmp);
+        }
+        if (FCS_v && regex_search(info_v, line3_groups, regex_Fragnum)) {
+            string tmp = line3_groups[1].str();
+            fragNum = stoull(tmp);
+        }
     }
     
     // return

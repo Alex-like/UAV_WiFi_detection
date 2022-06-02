@@ -49,9 +49,9 @@ float kernel(float x, const string kernelType) {
     return 0;
 }
 
-float calcFscore(const vector<vector<uint64_t>>& cm) {
-    uint64_t all = 0;
-    vector<uint64_t> p(cm.size(), 0), c(cm.size(), 0);
+float calcFscore(const vector<vector<u_int64_t>>& cm) {
+    u_int64_t all = 0;
+    vector<u_int64_t> p(cm.size(), 0), c(cm.size(), 0);
     for (int i = 0; i < cm.size(); i++)
         for (int j = 0; j < cm.size(); j++) {
             all += cm[i][j];
@@ -72,21 +72,21 @@ float calcFscore(const vector<vector<uint64_t>>& cm) {
 }
 
 float nadarayWatson(const vector<vector<float>>& data,
-                    const vector<uint32_t>& targets,
+                    const vector<u_int32_t>& targets,
                     float h,
                     const vector<float>& query,
                     function<float(const vector<float>&, const vector<float>&)> dist,
                     function<float(float)> kernel) {
-    vector<pair<float, uint64_t>> dists;
-    for (uint64_t i = 0; i < data.size(); i++) {
+    vector<pair<float, u_int64_t>> dists;
+    for (u_int64_t i = 0; i < data.size(); i++) {
         float d = dist(query, data[i]);
         dists.emplace_back(d, i);
     }
     if (abs(h) < EPS) {
         float sum = 0;
-        uint64_t cnt = 0;
+        u_int64_t cnt = 0;
         if (data[dists[0].first] == query) {
-            for (uint64_t i = 0; i < data.size(); i++)
+            for (u_int64_t i = 0; i < data.size(); i++)
                 if (data[i] == query) {
                     sum += targets[i];
                     cnt++;
@@ -113,20 +113,20 @@ float nadarayWatson(const vector<vector<float>>& data,
     return kernel_sum_with_classes / kernel_sum;
 }
 
-vector<vector<uint64_t>> regression(const vector<vector<float>>& data,
-                                    const vector<vector<uint32_t>>& targets,
+vector<vector<u_int64_t>> regression(const vector<vector<float>>& data,
+                                    const vector<vector<u_int32_t>>& targets,
                                     function<float(const vector<float>&, const vector<float>&)> distF,
                                     function<float(float)> kernelF,
                                     const string windType,
-                                    const uint64_t wind) {
-    vector<vector<uint64_t>> CM(targets.size(), vector<uint64_t>(targets.size(), 0));
+                                    const u_int64_t wind) {
+    vector<vector<u_int64_t>> CM(targets.size(), vector<u_int64_t>(targets.size(), 0));
     for (int i = 0; i < data.size(); i++) {
         vector<vector<float>> data_train(data);
         vector<float> data_test = data_train[i];
         data_train.erase(data_train.begin() + i);
         vector<float> predictions;
         for (int j = 0; j < targets.size(); j++) {
-            vector<uint32_t> targets_train = targets[j];
+            vector<u_int32_t> targets_train = targets[j];
             targets_train.erase(targets_train.begin() + i);
             float h;
             if (windType == "fixed")
@@ -142,15 +142,15 @@ vector<vector<uint64_t>> regression(const vector<vector<float>>& data,
             float pred = nadarayWatson(data_train, targets_train, h, data_test, distF, kernelF);
             predictions.push_back(pred);
         }
-        uint32_t max = 0;
-        uint64_t real = 0;
+        u_int32_t max = 0;
+        u_int64_t real = 0;
         for (int k = 0; k < targets.size(); k++)
             if (targets[k][i] > max) {
                 max = targets[k][i];
                 real = k;
             }
         float tmp_max = 0.0;
-        uint64_t pred = 0;
+        u_int64_t pred = 0;
         for (int k = 0; k < predictions.size(); k++)
             if (predictions[k] > tmp_max) {
                 tmp_max = predictions[k];
@@ -168,23 +168,23 @@ void normalize(vector<vector<float>> &df) {
         return;
     for (int j = 0; j < df[0].size(); j++) {
         float min_j = MAXFLOAT, max_j = MAXFLOAT + 1;
-        for (uint64_t i = 0; i < df.size(); i++) {
+        for (u_int64_t i = 0; i < df.size(); i++) {
             min_j = min(min_j, df[i][j]);
             max_j = max(max_j, df[i][j]);
         }
-        for (uint64_t i = 0; i < df.size(); i++)
+        for (u_int64_t i = 0; i < df.size(); i++)
             df[i][j] = (df[i][j] - min_j) / (max_j - min_j);
     }
 }
 
-vector<vector<uint32_t>> oneHotEncoding(const vector<uint32_t> &classes, const uint32_t classCnt) {
-    vector<vector<uint32_t>> result(classCnt, vector<uint32_t>(classes.size(), 0));
-    for (uint64_t i = 0; i < classes.size(); i++)
+vector<vector<u_int32_t>> oneHotEncoding(const vector<u_int32_t> &classes, const u_int32_t classCnt) {
+    vector<vector<u_int32_t>> result(classCnt, vector<u_int32_t>(classes.size(), 0));
+    for (u_int64_t i = 0; i < classes.size(); i++)
         result[classes[i] - 1][i] = 1;
     return result;
 }
 
-void LeaveOneOut::fit(const vector<vector<float>> &data, const vector<vector<uint32_t>> &targets) {
+void LeaveOneOut::fit(const vector<vector<float>> &data, const vector<vector<u_int32_t>> &targets) {
     this->data = data;
     this->targets = targets;
     bestFscore = 0.0;
@@ -195,7 +195,7 @@ void LeaveOneOut::fit(const vector<vector<float>> &data, const vector<vector<uin
             for (const string &k : kernelTypes)
                 combs.emplace_back(w, d, k);
     for (const auto &[windType, distType, kernelType] : combs) {
-        vector<uint64_t> windows;
+        vector<u_int64_t> windows;
         if (windType == "fixed") {
             float R_D = 0.0;
             for (const auto &a : data)
@@ -204,12 +204,12 @@ void LeaveOneOut::fit(const vector<vector<float>> &data, const vector<vector<uin
                     R_D = max(R_D, d);
                 }
             float R_D_div = R_D / sqrtD;
-            for (uint64_t i = 1; i < int(ceil(sqrtD)); i++)
-                windows.emplace_back(i * uint64_t(ceil(R_D_div)));
+            for (u_int64_t i = 1; i < int(ceil(sqrtD)); i++)
+                windows.emplace_back(i * u_int64_t(ceil(R_D_div)));
         } else
-            for (uint64_t i = 1; i < int(ceil(sqrtD)); i++)
+            for (u_int64_t i = 1; i < int(ceil(sqrtD)); i++)
                 windows.emplace_back(i);
-        for (const uint64_t wind : windows) {
+        for (const u_int64_t wind : windows) {
             function<float(const vector<float>&, const vector<float>&)> distF = [dt = distType](auto a, auto b) { return dist(a, b, dt); };
             function<float(float)> kernelF = [kt = kernelType](auto x) { return kernel(x, kt); };
             float fscore = calcFscore(regression(data,
@@ -238,12 +238,12 @@ void LeaveOneOut::fit(const vector<vector<float>> &data, const vector<vector<uin
     cout << "max F score: " << bestFscore << '\n';
 }
 
-uint32_t LeaveOneOut::predict(const vector<float>& query) {
+u_int32_t LeaveOneOut::predict(const vector<float>& query) {
     function<float(const vector<float>&, const vector<float>&)> distF = [dt = bestDistType](auto a, auto b) { return dist(a, b, dt); };
     function<float(float)> kernelF = [kt = bestKernelType](auto x) { return kernel(x, kt); };
     vector<float> predictions;
     for (int j = 0; j < targets.size(); j++) {
-        vector<uint32_t> targets_train = targets[j];
+        vector<u_int32_t> targets_train = targets[j];
         float h;
         if (bestWindowType == "fixed")
             h = bestWindowWidth;
@@ -259,7 +259,7 @@ uint32_t LeaveOneOut::predict(const vector<float>& query) {
         predictions.push_back(pred);
     }
     float max = 0.0;
-    uint32_t pred = 0;
+    u_int32_t pred = 0;
     for (int k = 0; k < predictions.size(); k++)
         if (predictions[k] > max) {
             max = predictions[k];

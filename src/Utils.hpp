@@ -69,7 +69,7 @@ u_int64_t macToHex(string mac);
  *
  * @return transformed string.
  */
-string str_tolower(string s);
+string strToLower(string s);
 /**
  * Check existing of string by key.
  *
@@ -93,6 +93,6 @@ string toString(const vector<u_int64_t> &vec);
 string toString(const vector<float> &vec);
 float fpow(float base, int exp);
 void printToFile(const string path, map<u_int64_t, vector<float>> &fom);
-tuple<vector<uint64_t>,vector<vector<float>>, vector<uint32_t>> readDataForKNNFromFile(const string path);
+tuple<vector<u_int64_t>,vector<vector<float>>, vector<u_int32_t>> readDataForKNNFromFile(const string path);
 
 #endif /* Utils_hpp */

@@ -100,7 +100,7 @@ bool Classifier::classifyBySSID(optional<string> ssid, Object& obj) {
         return false;
     }
     for (string word : stopWords) {
-        if (str_tolower(ssid.value()).find(word) != string::npos) {
+        if (strToLower(ssid.value()).find(word) != string::npos) {
             obj.setInfo(ssid.value());
             obj.setDevice(Drone);
             obj.addFeature(SSID);
