@@ -7,7 +7,7 @@
 
 #include "Utils.hpp"
 
-void readFromFile(const string path, vector<LogFrame> &to) {
+void readFromFile(const string path, vector<LogFrame> &to, const bool hasHeader, const bool hasBody) {
     vector <string> lines(3);
     int count = 0;
     ifstream in(path);
@@ -23,7 +23,7 @@ void readFromFile(const string path, vector<LogFrame> &to) {
             // remeber string
             lines[count++] = line;
             if (count == 3) {
-                to.push_back(parse(lines));
+                to.push_back(parse(lines, hasHeader, hasBody));
                 count = 0;
             }
         }
@@ -34,8 +34,11 @@ void readFromFile(const string path, vector<LogFrame> &to) {
 void printToFile(const string path, map<u_int64_t, vector<float>> &from) {
     ofstream out(path, ios::app);
     if (out.is_open()) {
-        for (auto &p : from)
-            out << hexToMAC(decToHex(p.first)) << " : " << toString(p.second) << '\n';
+        for (auto &p : from) {
+            out << hexToMAC(decToHex(p.first)) << " : ";
+            out << "1 : ";
+            out << toString(p.second) << '\n';
+        }
     }
     out.close();
 }

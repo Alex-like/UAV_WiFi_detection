@@ -60,6 +60,10 @@ private:
     optional<u_int64_t> fragNum;
 public:
     /**
+     * Default constuctor.
+     */
+    LogFrame();
+    /**
      * Basic constructor.
      *
      * @param ind_v frame index.
@@ -76,6 +80,30 @@ public:
      * @param RA_v receiver address if frame is correct and has it.
      */
     LogFrame(u_int64_t ind_v, float Offset_v, string BW_v, string MCS_v, int Size_v, string Frame_v, string info_v, bool FCS_v, optional<string> Type_v, optional<string> SSID_v,optional<u_int64_t> TA_v, optional<u_int64_t> RA_v, optional<bool> moreFragments_v, optional<u_int64_t> seqNum_v, optional<u_int64_t> fragNum_v);
+    /**
+     * Get frame's index.
+     *
+     * @return index.
+     */
+    u_int64_t getInd();
+    /**
+     * Get frame's BW.
+     *
+     * @return BW value.
+     */
+    string getBW();
+    /**
+     * Get frame's MCS.
+     *
+     * @return MCS value.
+     */
+    string getMCS();
+    /**
+     * Get hexadecimal frame's data.
+     *
+     * @return hexadecimal representation of frame.
+     */
+    string getFrame();
     /**
      * Get correctness of frame.
      *
@@ -119,9 +147,9 @@ public:
      */
     optional<string> getSSID();
     /**
-     * Get frame Data in hexadecimal representation.
+     * Get decoded data of frame.
      *
-     * @return bits of Data.
+     * @return decoded frame.
      */
     string getData();
     /**
@@ -189,31 +217,31 @@ public:
      *
      * @param info decoded frame.
      */
-    void setInfo(const string info);
+    void setData(const string info);
     /**
      * Set frame type.
      *
      * @param type of frame.
      */
-    void setType(const string type);
+    void setType(const optional<string> type);
     /**
      * Set SSID of frame.
      *
      * @param ssid string.
      */
-    void setSSID(const string ssid);
+    void setSSID(const optional<string> ssid);
     /**
      * Set TA of frame.
      *
      * @param ta MAC-address.
      */
-    void setTA(const u_int64_t ta);
+    void setTA(const optional<u_int64_t> ta);
     /**
      * Set RA of frame.
      *
      * @param ra MAC-address.
      */
-    void setRA(const u_int64_t ra);
+    void setRA(const optional<u_int64_t> ra);
     /**
      * Set FCS flag of frame.
      *
@@ -225,19 +253,19 @@ public:
      *
      * @param moreFrags flag.
      */
-    void setMoreFrags(const bool moreFrags);
+    void setMoreFrags(const optional<bool> moreFrags);
     /**
      * Set Seqnum of frame.
      *
      * @param seqNum value.
      */
-    void setSeqNum(const u_int64_t seqNum);
+    void setSeqNum(const optional<u_int64_t> seqNum);
     /**
      * Set Fragnum of frame.
      *
      * @param fragNum value.
      */
-    void setFragNum(const u_int64_t fragNum);
+    void setFragNum(const optional<u_int64_t> fragNum);
 };
 /**
  * Get frame information from string.

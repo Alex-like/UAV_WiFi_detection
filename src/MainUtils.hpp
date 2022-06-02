@@ -91,8 +91,9 @@ void workWithDefiniteFile(function<void(vector<LogFrame> &)> action);
  */
 void workWithAllFiles(function<void(vector<LogFrame> &)> action);
 
+pair<bool, bool> getFlagsOfExistance(const string &path);
+void workWithSeparatedFiles(function<void(vector<LogFrame> &)> action);
 void workWithModel();
-
 class Packet {
 private:
     u_int64_t number;

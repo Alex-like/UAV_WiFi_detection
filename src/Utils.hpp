@@ -24,7 +24,7 @@
  * @param path the file to read;
  * @param to reference to filling vector.
  */
-void readFromFile(const string path, vector<LogFrame> &to);
+void readFromFile(const string path, vector<LogFrame> &to, const bool hasHeader = true, const bool hasBody = true);
 /**
  * Convert decimal to hexadecimal number.
  *

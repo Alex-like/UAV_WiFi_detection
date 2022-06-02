@@ -9,6 +9,8 @@
 
 using namespace std;
 
+LogFrame::LogFrame() {}
+
 LogFrame::LogFrame(u_int64_t ind_v, float Offset_v, string BW_v, string MCS_v, int Size_v, string Frame_v, string info_v, bool FCS_v, optional<string> Type_v, optional<string> SSID_v, optional<u_int64_t> TA_v, optional<u_int64_t> RA_v, optional<bool> moreFragments_v, optional<u_int64_t> seqNum_v, optional<u_int64_t> fragNum_v) {
     ind = ind_v;
     Offset = Offset_v;
@@ -25,6 +27,22 @@ LogFrame::LogFrame(u_int64_t ind_v, float Offset_v, string BW_v, string MCS_v, i
     moreFragments = moreFragments_v;
     seqNum = seqNum_v;
     fragNum = fragNum_v;
+}
+
+u_int64_t LogFrame::getInd() {
+    return ind;
+}
+
+string LogFrame::getBW() {
+    return BW;
+}
+
+string LogFrame::getMCS() {
+    return MCS;
+}
+
+string LogFrame::getFrame() {
+    return Frame;
 }
 
 bool LogFrame::isCorrect() {
@@ -103,23 +121,23 @@ void LogFrame::setFrame(const string frame) {
     this->Frame = frame;
 }
 
-void LogFrame::setInfo(const string info) {
+void LogFrame::setData(const string info) {
     this->info = info;
 }
 
-void LogFrame::setType(const string type) {
+void LogFrame::setType(const optional<string> type) {
     this->Type = type;
 }
 
-void LogFrame::setSSID(const string ssid) {
+void LogFrame::setSSID(const optional<string> ssid) {
     this->SSID = ssid;
 }
 
-void LogFrame::setTA(const u_int64_t ta) {
+void LogFrame::setTA(const optional<u_int64_t> ta) {
     this->TA = ta;
 }
 
-void LogFrame::setRA(const u_int64_t ra) {
+void LogFrame::setRA(const optional<u_int64_t> ra) {
     this->RA = ra;
 }
 
@@ -127,15 +145,15 @@ void LogFrame::setFCS(const bool fcs) {
     this->FCS = fcs;
 }
 
-void LogFrame::setMoreFrags(const bool moreFrags) {
+void LogFrame::setMoreFrags(const optional<bool> moreFrags) {
     this->moreFragments = moreFrags;
 }
 
-void LogFrame::setSeqNum(const u_int64_t seqNum) {
+void LogFrame::setSeqNum(const optional<u_int64_t> seqNum) {
     this->seqNum = seqNum;
 }
 
-void LogFrame::setFragNum(const u_int64_t fragNum) {
+void LogFrame::setFragNum(const optional<u_int64_t> fragNum) {
     this->fragNum = fragNum;
 }
 

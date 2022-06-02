@@ -154,6 +154,7 @@ Packet::Packet(u_int64_t id, u_int64_t size_v, float time, vector<pair<u_int64_t
     arrivalTime = time;
     fragments = frags;
 }
+
 void Packet::addFragment(LogFrame* frame) {
     if (number != frame->getSeqNum() || fragments.size() - 1 == frame->getFragNum())
         return;
@@ -161,19 +162,24 @@ void Packet::addFragment(LogFrame* frame) {
     size += frame->getSize();
     arrivalTime = frame->getOffset();
 }
+
 u_int64_t Packet::getID() {
     return number;
 }
+
 u_int64_t Packet::getSize() {
     return size;
 }
+
 float Packet::getArrivalTime() {
     return arrivalTime;
 }
+
 float calcMedian(vector<float> xs, function<bool(float, float)> cmp) {
     sort(xs.begin(), xs.end(), cmp);
     return xs.size() % 2 == 0 ? xs[xs.size()/ 2 + 1] : xs[(xs.size() + 1)/ 2];
 }
+
 StandardFeatures::StandardFeatures(vector<float> xs) {
     float n = xs.size();
     // min, max
@@ -199,12 +205,14 @@ StandardFeatures::StandardFeatures(vector<float> xs) {
     // skewness
     skewness = accumulate(xs.begin(), xs.end(), 0.0, [m = mean, d = variance](float acc, float x) { return acc + fpow((x - m) / d, 3); }) / n;
 }
+
 string StandardFeatures::toString() {
     stringstream ss;
     ss.precision(5);
     ss << standartDeviation << ' ' << variance << ' ' << rootMeanSquare << ' ' << m_square << ' ' << p_skewness << ' ' << kurtosys << ' ' << skewness << ' ' << min << ' ' << max << ' ' << mean << ' ' << median << ' ' << medianAD;
     return ss.str();
 }
+
 vector<float> StandardFeatures::toVector() {
     return {
         standartDeviation, variance, rootMeanSquare,
@@ -213,6 +221,7 @@ vector<float> StandardFeatures::toVector() {
         mean, median, medianAD
     };
 }
+
 UniqueFeatures::UniqueFeatures(vector<Packet> packets) {
     // find pivot
     map<u_int64_t, u_int16_t> sizeAmounts;
@@ -236,12 +245,14 @@ UniqueFeatures::UniqueFeatures(vector<Packet> packets) {
     // pivot size / total sample size
     PT = float(pivotSize) / totalSize;
 }
+
 string UniqueFeatures::toString() {
     stringstream ss;
     ss.precision(5);
     ss << pivotSize << ' ' << PM << ' ' << PT;
     return ss.str();
 }
+
 vector<float> UniqueFeatures::toVector() {
     return {pivotSize, PM, PT};
 }
@@ -328,10 +339,10 @@ void workWithDataFrames(vector<LogFrame> &frames) {
         DS[p.first].insert(DS[p.first].end(), tmp.begin(), tmp.end());
     }
     
-//    for (auto &p : DS)
-//        cout << hexToMAC(decToHex(p.first)) << " : " << toString(p.second) << '\n';
+    for (auto &p : DS)
+        cout << hexToMAC(decToHex(p.first)) << " : " << toString(p.second) << '\n';
     
-    printToFile("/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/data.log", DS);
+//    printToFile("/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/data.log", DS);
     
 }
 
@@ -362,7 +373,7 @@ void workWithDefiniteFile(function<void(vector<LogFrame> &)> action) {
 }
 
 void workWithAllFiles(function<void(vector<LogFrame> &)> action) {
-    string paths[] = {
+    vector<string> paths {
         "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/3dr_solo/dsss/frames.log",
         "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/3dr_solo/wifi-ofdm-20/frames.log",
         "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/fimi_x8_me_2020/1wifi_fc_5825000000_fs_12000000.pcm.result/frames.log",
@@ -376,9 +387,70 @@ void workWithAllFiles(function<void(vector<LogFrame> &)> action) {
         "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/skydio2/4_Взлет_и_посадка_в_офисе/frames.log"
     };
     vector<LogFrame> frames;
-    for (string path : paths) {
+    for (const string &path : paths) {
 //        cout << path << '\n';
         readFromFile(path, frames);
+        action(frames);
+        frames.clear();
+    }
+}
+
+
+pair<bool, bool> getFlagsOfExistance(const string &path) {
+    bool hasHeader = path.ends_with("_phy.log");
+    bool hasBody = path.ends_with("_parser.log");
+    return {hasHeader, hasBody};
+}
+
+void workWithSeparatedFiles(function<void(vector<LogFrame> &)> action) {
+    vector<string> paths {
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/dji_mavic_air/handshake-work-goodbye.pcm/frames_parser.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/dji_mavic_air/handshake-work-goodbye.pcm/frames_phy.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/dji_tello/18_01_45 2427MHz 23312.5KHz.pcm/frames_parser.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/dji_tello/18_01_45 2427MHz 23312.5KHz.pcm/frames_phy.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/syma_x5_sw/10_24_27 2439.346405MHz 93250.000000KHz.pcm/frames_parser.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/syma_x5_sw/10_24_27 2439.346405MHz 93250.000000KHz.pcm/frames_phy.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/syma_x5_uw/10_31_11 2439.346405MHz 93250.000000KHz.pcm/frames_parser.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/syma_x5_uw/10_31_11 2439.346405MHz 93250.000000KHz.pcm/frames_phy.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/wltoys_q242/10_39_38 2439.346405MHz 93250.000000KHz(Video).pcm/frames_parser.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/wltoys_q242/10_39_38 2439.346405MHz 93250.000000KHz(Video).pcm/frames_phy.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/xiaomi_mi_drone_4k/13_40_03 5765.117978MHz 13321.428571KHz.pcm/frames_parser.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/xiaomi_mi_drone_4k/13_40_03 5765.117978MHz 13321.428571KHz.pcm/frames_phy.log"
+    };
+    vector<LogFrame> frames;
+    map<u_int64_t, LogFrame> frameByInd;
+    for (int i = 0; i < paths.size(); i += 2) {
+        cout << paths[i] << '\n';
+        auto [hasHeader, hasBody] = getFlagsOfExistance(paths[i]);
+        readFromFile(paths[i], frames, hasHeader, hasBody);
+        for (LogFrame frame : frames)
+            frameByInd[frame.getInd()] = frame;
+        frames.clear();
+        tie(hasHeader, hasBody) = getFlagsOfExistance(paths[i + 1]);
+        readFromFile(paths[i + 1], frames, hasHeader, hasBody);
+        for (LogFrame &frame : frames) {
+            LogFrame &oFrame = frameByInd[frame.getInd()];
+            if (hasHeader && !hasBody) {
+                if (!oFrame.isCorrect()) {
+                    frame.setFCS(oFrame.isCorrect());
+                    continue;
+                }
+                frame.setFCS(oFrame.isCorrect());
+                frame.setType(oFrame.getType());
+                frame.setSSID(oFrame.getSSID());
+                frame.setTA(oFrame.getTA());
+                frame.setRA(oFrame.getRA());
+                frame.setMoreFrags(oFrame.getMoreFrags());
+                frame.setSeqNum(oFrame.getSeqNum());
+                frame.setFragNum(oFrame.getFragNum());
+            } else {
+                frame.setOffset(oFrame.getOffset());
+                frame.setBW(oFrame.getBW());
+                frame.setMCS(oFrame.getMCS());
+                frame.setSize(oFrame.getSize());
+                frame.setFrame(oFrame.getFrame());
+            }
+        }
         action(frames);
         frames.clear();
     }
