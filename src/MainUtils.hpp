@@ -90,10 +90,25 @@ void workWithDefiniteFile(function<void(vector<LogFrame> &)> action);
  * @param action worker with frames for each file.
  */
 void workWithAllFiles(function<void(vector<LogFrame> &)> action);
-
+/**
+ * Get pair of flags which shows existance of header and body in frames from file.
+ *
+ * @param path file's path.
+ *
+ * @return pair with boolean flags of existance.
+ */
 pair<bool, bool> getFlagsOfExistance(const string &path);
+/**
+ * Process all files with separated frames.
+ *
+ * @param action worker with frames for each file.
+ */
 void workWithSeparatedFiles(function<void(vector<LogFrame> &)> action);
+/**
+ * Train model and predict something.
+ */
 void workWithModel();
+
 class Packet {
 private:
     u_int64_t number;

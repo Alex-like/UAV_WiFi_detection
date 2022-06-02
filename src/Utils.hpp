@@ -88,11 +88,47 @@ bool checkExist(u_int64_t key, map<u_int64_t, string> &dict);
  * @return vector of LogFrames which was accepted.
  */
 vector<LogFrame> filter(const vector<LogFrame>& vec, function<bool(LogFrame)> predicate);
-
+/**
+ * String representation of vector.
+ *
+ * @param vec reference to vector.
+ *
+ * @return string representation of vector.
+ */
 string toString(const vector<u_int64_t> &vec);
+// PROBLEMS WITH MY ARCHITECTURE.
+// USE TEMPLATE IN NORMALE LIFE.
+/**
+ * String representation of vector.
+ *
+ * @param vec reference to vector.
+ *
+ * @return string representation of vector.
+ */
 string toString(const vector<float> &vec);
+/**
+ * Quick power(base, exp).
+ *
+ * @param base value.
+ * @param exp value, only integer.
+ *
+ * @return power of 'base' into 'exp'.
+ */
 float fpow(float base, int exp);
-void printToFile(const string path, map<u_int64_t, vector<float>> &fom);
-tuple<vector<u_int64_t>,vector<vector<float>>, vector<u_int32_t>> readDataForKNNFromFile(const string path);
+/**
+ * Print dataset with features to file.
+ *
+ * @param path file's path.
+ * @param from reference to map with features.
+ */
+void printToFile(const string path, map<u_int64_t, vector<float>> &from);
+/**
+ * Read dataset with features and targets from file.
+ *
+ * @param path file's path.
+ *
+ * @return tuple with objects' names, features and targets.
+ */
+tuple<vector<u_int64_t>,vector<vector<float>>, vector<u_int32_t>> readDataForKNNModelFromFile(const string path);
 
 #endif /* Utils_hpp */

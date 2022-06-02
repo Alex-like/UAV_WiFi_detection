@@ -347,7 +347,7 @@ void workWithDataFrames(vector<LogFrame> &frames) {
 }
 
 void workWithModel() {
-    auto [macs, data, classes] = readDataForKNNFromFile("/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/data.log");
+    auto [macs, data, classes] = readDataForKNNModelFromFile("/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/data.log");
     normalize(data);
     u_int32_t classCnt = 0;
     for (const u_int32_t cl : classes)

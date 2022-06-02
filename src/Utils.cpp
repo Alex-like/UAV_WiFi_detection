@@ -43,7 +43,7 @@ void printToFile(const string path, map<u_int64_t, vector<float>> &from) {
     out.close();
 }
 
-tuple<vector<u_int64_t>,vector<vector<float>>, vector<u_int32_t>> readDataForKNNFromFile(const string path) {
+tuple<vector<u_int64_t>,vector<vector<float>>, vector<u_int32_t>> readDataForKNNModelFromFile(const string path) {
     vector<u_int32_t> classes;
     vector<u_int64_t> macs;
     vector<vector<float>> data;
