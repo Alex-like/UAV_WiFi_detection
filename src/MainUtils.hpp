@@ -73,6 +73,12 @@ void classifyAllMacFromFrames(vector<LogFrame> &frames);
  */
 void printFramesTypes(vector<LogFrame> &frames);
 /**
+ * Filter data-frames, exclude features from them and make dataset with features.
+ *
+ * @param frames reference to stream of frames.
+ */
+vector<vector<float>> excludeDataForTrainingSet(vector<LogFrame> &frames);
+/**
  * Filter data-frames and process them.
  *
  * @param frames reference to stream of frames.
@@ -103,7 +109,7 @@ pair<bool, bool> getFlagsOfExistance(const string &path);
  *
  * @param action worker with frames for each file.
  */
-void workWithSeparatedFiles(function<void(vector<LogFrame> &)> action);
+void workWithSeparatedFiles(function<vector<vector<float>>(vector<LogFrame> &)> action);
 /**
  * Train model and predict something.
  */

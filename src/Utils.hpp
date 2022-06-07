@@ -121,7 +121,7 @@ float fpow(float base, int exp);
  * @param path file's path.
  * @param from reference to map with features.
  */
-void printToFile(const string path, map<u_int64_t, vector<float>> &from);
+void printToFile(const string path, vector<vector<float>> &from);
 /**
  * Read dataset with features and targets from file.
  *

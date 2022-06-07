@@ -145,7 +145,6 @@ void printFramesTypes(vector<LogFrame> &frames) {
                 cout << type << ' ';
             cout << '\n';
         }
-    
 }
 
 Packet::Packet(u_int64_t id, u_int64_t size_v, float time, vector<pair<u_int64_t, u_int64_t>> frags) {
@@ -257,6 +256,75 @@ vector<float> UniqueFeatures::toVector() {
     return {pivotSize, PM, PT};
 }
 
+vector<vector<float>> excludeDataForTrainingSet(vector<LogFrame> &frames) {
+    // filter data frames
+    vector<LogFrame> dataFrames = filter(frames, [](LogFrame f) { return f.getType().has_value() && f.getType().value().starts_with("Data") && f.getType().value().ends_with("Data"); });
+    // grouped frames by TA
+    map<u_int64_t, vector<LogFrame*>> transmitions;
+    for (int i = 0; i < dataFrames.size(); i++) {
+        optional<u_int64_t> tmp_num = dataFrames[i].getTA();
+        if (!tmp_num.has_value())
+            continue;
+        u_int64_t TA = tmp_num.value();
+        transmitions[TA].emplace_back(&dataFrames[i]);
+    }
+    // sort groupes by seqnum and fragnum
+    for (auto &p : transmitions) {
+        sort(p.second.begin(), p.second.end(), [](LogFrame* a, LogFrame* b) { return a->getSeqNum() != b->getSeqNum() ? a->getSeqNum() < b->getSeqNum() : a->getFragNum() < b->getFragNum(); });
+    }
+    // collect transmitions to packets grouped by TA
+    map<u_int64_t, vector<Packet>> D;
+    for (auto &p : transmitions) {
+        D[p.first] = vector<Packet>();
+        for (int i = 0; i < p.second.size(); i++) {
+            if (i == 0 || p.second[i]->getSeqNum() > p.second[i - 1]->getSeqNum()) {
+                Packet new_p(p.second[i]->getSeqNum(), p.second[i]->getSize(), p.second[i]->getOffset(), {{p.second[i]->getSize(), p.second[i]->getOffset()}});
+                D[p.first].emplace_back(new_p);
+                continue;
+            }
+            u_int64_t last = D[p.first].size() - 1;
+            D[p.first][last].addFragment(p.second[i]);
+        }
+        sort(D[p.first].begin(), D[p.first].end(), [](Packet a, Packet b) { return a.getArrivalTime() < b.getArrivalTime(); });
+    }
+    // regroup "MTU" packets into groups with size not more than 20 packets
+    vector<vector<Packet>> SM;
+    for (auto &p : D) {
+        if (p.second.size() < 20)
+            SM.emplace_back(p.second);
+        else {
+            int left = 0;
+            while (left < p.second.size()) {
+                int right = min(left + 20, int(p.second.size()));
+                SM.emplace_back(vector<Packet>());
+                for (int i = left; i < right; i++)
+                    SM.back().emplace_back(p.second[i]);
+                left = right;
+            }
+        }
+    }
+    vector<vector<float>> DS;
+    for (size_t i = 0; i < SM.size(); i++) {
+        if (SM[i].size() < 8)
+            continue;
+        vector<float> tmp, curFeatures;
+        tmp = UniqueFeatures(SM[i]).toVector();
+        curFeatures.insert(curFeatures.end(), tmp.begin(), tmp.end());
+        tmp.clear();
+        transform(SM[i].begin(), SM[i].end(), back_inserter(tmp), [](Packet p) { return p.getSize(); });
+        tmp = StandardFeatures(tmp).toVector();
+        curFeatures.insert(curFeatures.end(), tmp.begin(), tmp.end());
+        tmp.clear();
+        transform(SM[i].begin(), SM[i].end(), back_inserter(tmp), [](Packet p) { return p.getArrivalTime(); });
+        tmp = StandardFeatures(tmp).toVector();
+        curFeatures.insert(curFeatures.end(), tmp.begin(), tmp.end());
+        if (count_if(curFeatures.begin(), curFeatures.end(), [](float x){ return isnan(x); }) > 0)
+            continue;
+        DS.emplace_back(vector<float>(curFeatures));
+    }
+    return DS;
+}
+
 void workWithDataFrames(vector<LogFrame> &frames) {
     // filter data frames
     vector<LogFrame> dataFrames = filter(frames, [](LogFrame f) { return f.getType().has_value() && f.getType().value().starts_with("Data") && f.getType().value().ends_with("Data"); });
@@ -313,7 +381,7 @@ void workWithDataFrames(vector<LogFrame> &frames) {
             for (int i = left; i < right; i++)
                 SM[p.first].emplace_back(p.second[i]);
         }
-    };
+    }
 //    for (auto &p : SM) {
 //        cout << hexToMAC(decToHex(p.first)) << " : ";
 //        for (Packet packet : p.second)
@@ -402,7 +470,7 @@ pair<bool, bool> getFlagsOfExistance(const string &path) {
     return {hasHeader, hasBody};
 }
 
-void workWithSeparatedFiles(function<void(vector<LogFrame> &)> action) {
+void workWithSeparatedFiles(function<vector<vector<float>>(vector<LogFrame> &)> action) {
     vector<string> paths {
         "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/dji_mavic_air/handshake-work-goodbye.pcm/frames_parser.log",
         "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/dji_mavic_air/handshake-work-goodbye.pcm/frames_phy.log",
@@ -419,6 +487,7 @@ void workWithSeparatedFiles(function<void(vector<LogFrame> &)> action) {
     };
     vector<LogFrame> frames;
     map<u_int64_t, LogFrame> frameByInd;
+    vector<vector<float>> DS = {};
     for (int i = 0; i < paths.size(); i += 2) {
         cout << paths[i] << '\n';
         auto [hasHeader, hasBody] = getFlagsOfExistance(paths[i]);
@@ -451,8 +520,10 @@ void workWithSeparatedFiles(function<void(vector<LogFrame> &)> action) {
                 frame.setFrame(oFrame.getFrame());
             }
         }
-        action(frames);
+        vector<vector<float>> features = action(frames);
+        DS.insert(DS.end(), features.begin(), features.end());
         frames.clear();
     }
+    printToFile("/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/data.log", DS);
 }
 

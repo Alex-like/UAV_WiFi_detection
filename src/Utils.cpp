@@ -31,13 +31,13 @@ void readFromFile(const string path, vector<LogFrame> &to, const bool hasHeader,
     in.close();
 }
 
-void printToFile(const string path, map<u_int64_t, vector<float>> &from) {
-    ofstream out(path, ios::app);
+void printToFile(const string path, vector<vector<float>> &from) {
+    ofstream out(path, ios::out);
     if (out.is_open()) {
-        for (auto &p : from) {
-            out << hexToMAC(decToHex(p.first)) << " : ";
+        for (size_t i = 0; i < from.size(); i++) {
+            out << i << " : ";
             out << "1 : ";
-            out << toString(p.second) << '\n';
+            out << toString(from[i]) << '\n';
         }
     }
     out.close();
