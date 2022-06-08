@@ -295,6 +295,7 @@ vector<vector<float>> excludeDataForTrainingSet(vector<LogFrame> &frames) {
         else {
             int left = 0;
             while (left < p.second.size()) {
+                for (; left < p.second.size() - 1 && p.second[left].getSize() <= p.second[left + 1].getSize() && p.second.size() - left > 20; left++);
                 int right = min(left + 20, int(p.second.size()));
                 SM.emplace_back(vector<Packet>());
                 for (int i = left; i < right; i++)
