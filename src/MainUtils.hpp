@@ -77,7 +77,7 @@ void printFramesTypes(vector<LogFrame> &frames);
  *
  * @param frames reference to stream of frames.
  */
-vector<vector<float>> excludeDataForTrainingSet(vector<LogFrame> &frames);
+void excludeDataForTrainingSet(vector<LogFrame> &frames);
 /**
  * Filter data-frames and process them.
  *
@@ -109,7 +109,7 @@ pair<bool, bool> getFlagsOfExistance(const string &path);
  *
  * @param action worker with frames for each file.
  */
-void workWithSeparatedFiles(function<vector<vector<float>>(vector<LogFrame> &)> action);
+void workWithSeparatedFiles(function<void(vector<LogFrame> &)> action);
 /**
  * Train model and predict something.
  */
@@ -128,6 +128,24 @@ public:
     u_int64_t getSize();
     float getArrivalTime();
 };
+/**
+ * Collect transmitions into packets and group them by TA.
+ *
+ * @param frames reference to vector of Logframes.
+ *
+ * @return map with packets
+ * key: TA (MAC-address);
+ * value: sorted vector of Packets.
+ */
+map<u_int64_t, vector<Packet>> collectPacketsByTA(const vector<LogFrame> &frames);
+/**
+ * Make vector of features.
+ *
+ * @param packets reference to vector with packets.
+ *
+ * @return vector of features.
+ */
+vector<float> excludeFeaturesFromPackets(const vector<Packet> &packets);
 class StandardFeatures {
 public:
     float standartDeviation;

@@ -256,77 +256,7 @@ vector<float> UniqueFeatures::toVector() {
     return {pivotSize, PM, PT};
 }
 
-vector<vector<float>> excludeDataForTrainingSet(vector<LogFrame> &frames) {
-    // filter data frames
-    vector<LogFrame> dataFrames = filter(frames, [](LogFrame f) { return f.getType().has_value() && f.getType().value().starts_with("Data") && f.getType().value().ends_with("Data"); });
-    // grouped frames by TA
-    map<u_int64_t, vector<LogFrame*>> transmitions;
-    for (int i = 0; i < dataFrames.size(); i++) {
-        optional<u_int64_t> tmp_num = dataFrames[i].getTA();
-        if (!tmp_num.has_value())
-            continue;
-        u_int64_t TA = tmp_num.value();
-        transmitions[TA].emplace_back(&dataFrames[i]);
-    }
-    // sort groupes by seqnum and fragnum
-    for (auto &p : transmitions) {
-        sort(p.second.begin(), p.second.end(), [](LogFrame* a, LogFrame* b) { return a->getSeqNum() != b->getSeqNum() ? a->getSeqNum() < b->getSeqNum() : a->getFragNum() < b->getFragNum(); });
-    }
-    // collect transmitions to packets grouped by TA
-    map<u_int64_t, vector<Packet>> D;
-    for (auto &p : transmitions) {
-        D[p.first] = vector<Packet>();
-        for (int i = 0; i < p.second.size(); i++) {
-            if (i == 0 || p.second[i]->getSeqNum() > p.second[i - 1]->getSeqNum()) {
-                Packet new_p(p.second[i]->getSeqNum(), p.second[i]->getSize(), p.second[i]->getOffset(), {{p.second[i]->getSize(), p.second[i]->getOffset()}});
-                D[p.first].emplace_back(new_p);
-                continue;
-            }
-            u_int64_t last = D[p.first].size() - 1;
-            D[p.first][last].addFragment(p.second[i]);
-        }
-        sort(D[p.first].begin(), D[p.first].end(), [](Packet a, Packet b) { return a.getArrivalTime() < b.getArrivalTime(); });
-    }
-    // regroup "MTU" packets into groups with size not more than 20 packets
-    vector<vector<Packet>> SM;
-    for (auto &p : D) {
-        if (p.second.size() < 20)
-            SM.emplace_back(p.second);
-        else {
-            int left = 0;
-            while (left < p.second.size()) {
-                for (; left < p.second.size() - 1 && p.second[left].getSize() <= p.second[left + 1].getSize() && p.second.size() - left > 20; left++);
-                int right = min(left + 20, int(p.second.size()));
-                SM.emplace_back(vector<Packet>());
-                for (int i = left; i < right; i++)
-                    SM.back().emplace_back(p.second[i]);
-                left = right;
-            }
-        }
-    }
-    vector<vector<float>> DS;
-    for (size_t i = 0; i < SM.size(); i++) {
-        if (SM[i].size() < 8)
-            continue;
-        vector<float> tmp, curFeatures;
-        tmp = UniqueFeatures(SM[i]).toVector();
-        curFeatures.insert(curFeatures.end(), tmp.begin(), tmp.end());
-        tmp.clear();
-        transform(SM[i].begin(), SM[i].end(), back_inserter(tmp), [](Packet p) { return p.getSize(); });
-        tmp = StandardFeatures(tmp).toVector();
-        curFeatures.insert(curFeatures.end(), tmp.begin(), tmp.end());
-        tmp.clear();
-        transform(SM[i].begin(), SM[i].end(), back_inserter(tmp), [](Packet p) { return p.getArrivalTime(); });
-        tmp = StandardFeatures(tmp).toVector();
-        curFeatures.insert(curFeatures.end(), tmp.begin(), tmp.end());
-        if (count_if(curFeatures.begin(), curFeatures.end(), [](float x){ return isnan(x); }) > 0)
-            continue;
-        DS.emplace_back(vector<float>(curFeatures));
-    }
-    return DS;
-}
-
-void workWithDataFrames(vector<LogFrame> &frames) {
+map<u_int64_t, vector<Packet>> collectPacketsByTA(const vector<LogFrame> &frames) {
     // filter data frames
     vector<LogFrame> dataFrames = filter(frames, [](LogFrame f) { return f.getType().has_value() && f.getType().value().starts_with("Data") && f.getType().value().ends_with("Data"); });
     // grouped frames by TA
@@ -354,7 +284,10 @@ void workWithDataFrames(vector<LogFrame> &frames) {
         D[p.first] = vector<Packet>();
         for (int i = 0; i < p.second.size(); i++) {
             if (i == 0 || p.second[i]->getSeqNum() > p.second[i - 1]->getSeqNum()) {
-                Packet new_p(p.second[i]->getSeqNum(), p.second[i]->getSize(), p.second[i]->getOffset(), {{p.second[i]->getSize(), p.second[i]->getOffset()}});
+                Packet new_p(p.second[i]->getSeqNum(),
+                             p.second[i]->getSize(),
+                             p.second[i]->getOffset(),
+                             {{p.second[i]->getSize(), p.second[i]->getOffset()}});
                 D[p.first].emplace_back(new_p);
                 continue;
             }
@@ -369,6 +302,60 @@ void workWithDataFrames(vector<LogFrame> &frames) {
 //            cout << '(' << packet.getSize() << ", " << packet.getArrivalTime() << ") ";
 //        cout << '\n';
 //    }
+    return D;
+}
+
+vector<float> excludeFeaturesFromPackets(const vector<Packet> &packets) {
+    vector<float> tmp, curFeatures;
+    tmp = UniqueFeatures(packets).toVector();
+    curFeatures.insert(curFeatures.end(), tmp.begin(), tmp.end());
+    tmp.clear();
+    transform(packets.begin(), packets.end(), back_inserter(tmp), [](Packet p) { return p.getSize(); });
+    tmp = StandardFeatures(tmp).toVector();
+    curFeatures.insert(curFeatures.end(), tmp.begin(), tmp.end());
+    tmp.clear();
+    transform(packets.begin(), packets.end(), back_inserter(tmp), [](Packet p) { return p.getArrivalTime(); });
+    tmp = StandardFeatures(tmp).toVector();
+    curFeatures.insert(curFeatures.end(), tmp.begin(), tmp.end());
+    return curFeatures;
+}
+
+void excludeDataForTrainingSet(vector<LogFrame> &frames) {
+    // collect transmitions to packets grouped by TA
+    map<u_int64_t, vector<Packet>> D = collectPacketsByTA(frames);
+    // regroup "MTU" packets into groups with size not more than 20 packets
+    vector<vector<Packet>> SM;
+    for (auto &p : D) {
+        if (p.second.size() < 20)
+            SM.emplace_back(p.second);
+        else {
+            int left = 0;
+            while (left < p.second.size()) {
+                for (; left < p.second.size() - 1 && p.second[left].getSize() <= p.second[left + 1].getSize() && p.second.size() - left > 20; left++);
+                int right = min(left + 20, int(p.second.size()));
+                SM.emplace_back(vector<Packet>());
+                for (int i = left; i < right; i++)
+                    SM.back().emplace_back(p.second[i]);
+                left = right;
+            }
+        }
+    }
+    // create Features DataSet
+    vector<vector<float>> DS;
+    for (size_t i = 0; i < SM.size(); i++) {
+        if (SM[i].size() < 8)
+            continue;
+        vector<float> curFeatures = excludeFeaturesFromPackets(SM[i]);
+        if (count_if(curFeatures.begin(), curFeatures.end(), [](float x){ return isnan(x); }) > 0)
+            continue;
+        DS.emplace_back(curFeatures);
+    }
+    printToFile("/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/test.log", DS, 1);
+}
+
+void workWithDataFrames(vector<LogFrame> &frames) {
+    // collect transmitions to packets grouped by TA
+    map<u_int64_t, vector<Packet>> D = collectPacketsByTA(frames);
     // cut first "MTU" packets from begin and save not more than 20 packets
     map<u_int64_t, vector<Packet>> SM;
     for (auto &p : D) {
@@ -383,40 +370,23 @@ void workWithDataFrames(vector<LogFrame> &frames) {
                 SM[p.first].emplace_back(p.second[i]);
         }
     }
-//    for (auto &p : SM) {
-//        cout << hexToMAC(decToHex(p.first)) << " : ";
-//        for (Packet packet : p.second)
-//            cout << '(' << packet.getSize() << ", " << packet.getArrivalTime() << ") ";
-//        cout << '\n';
-//    }
     // create Features DataSet
     map<u_int64_t, vector<float>> DS;
     for (auto &p : SM) {
         if (p.second.size() < 8)
             continue;
-        vector<float> tmp;
-        DS[p.first] = {};
-        tmp = UniqueFeatures(p.second).toVector();
-        DS[p.first].insert(DS[p.first].end(), tmp.begin(), tmp.end());
-        tmp.clear();
-        transform(p.second.begin(), p.second.end(), back_inserter(tmp), [](Packet p) { return p.getSize(); });
-        tmp = StandardFeatures(tmp).toVector();
-        DS[p.first].insert(DS[p.first].end(), tmp.begin(), tmp.end());
-        tmp.clear();
-        transform(p.second.begin(), p.second.end(), back_inserter(tmp), [](Packet p) { return p.getArrivalTime(); });
-        tmp = StandardFeatures(tmp).toVector();
-        DS[p.first].insert(DS[p.first].end(), tmp.begin(), tmp.end());
+        vector<float> curFeatures = excludeFeaturesFromPackets(p.second);
+        if (count_if(curFeatures.begin(), curFeatures.end(), [](float x){ return isnan(x); }) > 0)
+            continue;
+        DS[p.first] = curFeatures;
     }
-    
     for (auto &p : DS)
         cout << hexToMAC(decToHex(p.first)) << " : " << toString(p.second) << '\n';
-    
-//    printToFile("/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/data.log", DS);
-    
+//    printToFile("/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/data.log", DS, 1);
 }
 
 void workWithModel() {
-    auto [macs, data, classes] = readDataForKNNModelFromFile("/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/data.log");
+    auto [data, classes] = readTrainingDataForKNNModelFromFile("/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/data.log");
     normalize(data);
     u_int32_t classCnt = 0;
     for (const u_int32_t cl : classes)
@@ -425,7 +395,7 @@ void workWithModel() {
     LeaveOneOut lvoModel;
     lvoModel.fit(data, targets);
     
-    // TEST
+    // TEST (need normalize data)
     vector<float> query = {601, 0.967794, 0.113525, 251.097, 63049.8, 502.418, 252424, -0.0076051, 3.18499e-10, -3.91268e-08, 82, 621, 441.167, 601, 20, 22.6925, 514.949, 34.301, 1176.56, 0.00741055, 4.72455e-06, 2.66138e-05, 1.2609, 57.3001, 26.5428, 25.2708, 24.0099,};
     u_int32_t expectedClass = 1;
     cout << "Test : actual(" << lvoModel.predict(query) << "), expected(" << expectedClass << ")\n";
@@ -471,7 +441,7 @@ pair<bool, bool> getFlagsOfExistance(const string &path) {
     return {hasHeader, hasBody};
 }
 
-void workWithSeparatedFiles(function<vector<vector<float>>(vector<LogFrame> &)> action) {
+void workWithSeparatedFiles(function<void(vector<LogFrame> &)> action) {
     vector<string> paths {
         "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/dji_mavic_air/handshake-work-goodbye.pcm/frames_parser.log",
         "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/dji_mavic_air/handshake-work-goodbye.pcm/frames_phy.log",
@@ -488,7 +458,6 @@ void workWithSeparatedFiles(function<vector<vector<float>>(vector<LogFrame> &)> 
     };
     vector<LogFrame> frames;
     map<u_int64_t, LogFrame> frameByInd;
-    vector<vector<float>> DS = {};
     for (int i = 0; i < paths.size(); i += 2) {
         cout << paths[i] << '\n';
         auto [hasHeader, hasBody] = getFlagsOfExistance(paths[i]);
@@ -521,10 +490,8 @@ void workWithSeparatedFiles(function<vector<vector<float>>(vector<LogFrame> &)> 
                 frame.setFrame(oFrame.getFrame());
             }
         }
-        vector<vector<float>> features = action(frames);
-        DS.insert(DS.end(), features.begin(), features.end());
+        action(frames);
         frames.clear();
     }
-    printToFile("/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/data.log", DS);
 }
 

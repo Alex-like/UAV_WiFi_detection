@@ -120,8 +120,9 @@ float fpow(float base, int exp);
  *
  * @param path file's path.
  * @param from reference to map with features.
+ * @param classNumber number of expected class.
  */
-void printToFile(const string path, vector<vector<float>> &from);
+void printToFile(const string path, const vector<vector<float>> &from, const uint32_t classNumber);
 /**
  * Read dataset with features and targets from file.
  *
@@ -129,6 +130,6 @@ void printToFile(const string path, vector<vector<float>> &from);
  *
  * @return tuple with objects' names, features and targets.
  */
-tuple<vector<u_int64_t>,vector<vector<float>>, vector<u_int32_t>> readDataForKNNModelFromFile(const string path);
+tuple<vector<vector<float>>, vector<u_int32_t>> readTrainingDataForKNNModelFromFile(const string path);
 
 #endif /* Utils_hpp */

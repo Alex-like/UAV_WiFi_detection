@@ -31,21 +31,19 @@ void readFromFile(const string path, vector<LogFrame> &to, const bool hasHeader,
     in.close();
 }
 
-void printToFile(const string path, vector<vector<float>> &from) {
-    ofstream out(path, ios::out);
+void printToFile(const string path, const vector<vector<float>> &from, const uint32_t classNumber) {
+    ofstream out(path, ios::app);
     if (out.is_open()) {
         for (size_t i = 0; i < from.size(); i++) {
-            out << i << " : ";
-            out << "1 : ";
+            out << classNumber << " : ";
             out << toString(from[i]) << '\n';
         }
     }
     out.close();
 }
 
-tuple<vector<u_int64_t>,vector<vector<float>>, vector<u_int32_t>> readDataForKNNModelFromFile(const string path) {
+tuple<vector<vector<float>>, vector<u_int32_t>> readTrainingDataForKNNModelFromFile(const string path) {
     vector<u_int32_t> classes;
-    vector<u_int64_t> macs;
     vector<vector<float>> data;
     ifstream in(path);
     if (in.is_open()) {
@@ -56,22 +54,15 @@ tuple<vector<u_int64_t>,vector<vector<float>>, vector<u_int32_t>> readDataForKNN
             if (regex_match(line, match, regex("^\\s*$"))) {
                 continue;
             }
-            u_int64_t mac;
             vector<float> features;
             u_int32_t cl;
             u_int32_t pos = 0;
             // parse
-            const regex regexMAC("([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+)");
-            const regex regexClass(": ([0-9]+) :");
+            const regex regexClass("([0-9]+) :");
             const regex regexFeature("([0-9e.-]+)");
-            if (regex_search(line, match, regexMAC)) {
-                string hex = match[1].str() + match[2].str() + match[3].str() + match[4].str() + match[5].str() + match[6].str();
-                pos += hex.length() + 5;
-                mac = stoull(hex, 0, 16);
-            }
             if (regex_search(line, match, regexClass)) {
                 string dec = match[1].str();
-                pos += dec.length() + 4;
+                pos += dec.length() + 2;
                 cl = stoi(dec, 0);
             }
             string subString = line.substr(pos);
@@ -81,12 +72,11 @@ tuple<vector<u_int64_t>,vector<vector<float>>, vector<u_int32_t>> readDataForKNN
             };
             for (const string& num : matches)
                 features.emplace_back(stof(num));
-            macs.emplace_back(mac);
             data.emplace_back(features);
             classes.emplace_back(cl);
         }
     }
-    return make_tuple(macs, data, classes);
+    return make_tuple(data, classes);
 }
 
 string decToHex(const u_int64_t dec) {
