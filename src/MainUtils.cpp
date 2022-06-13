@@ -350,7 +350,7 @@ void excludeDataForTrainingSet(vector<LogFrame> &frames) {
             continue;
         DS.emplace_back(curFeatures);
     }
-    printToFile("/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/test.log", DS, 1);
+    printToFile("/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/data.log", DS, 2);
 }
 
 void workWithDataFrames(vector<LogFrame> &frames) {
@@ -385,20 +385,42 @@ void workWithDataFrames(vector<LogFrame> &frames) {
 //    printToFile("/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/data.log", DS, 1);
 }
 
-void workWithModel() {
+LeaveOneOut trainModel() {
+    auto [data, classes] = readTrainingDataForKNNModelFromFile("/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/data.log");
+    LeaveOneOut lvoModel;
+    normalize(data);
+    lvoModel.fit(data, classes);
+    return lvoModel;
+}
+
+void workWithModel(vector<float> &query) {
+    LeaveOneOut lvoModel = trainModel();
+    cout << lvoModel.predict(query) << '\n';
+}
+
+void testModel() {
+    const string bestDistType = "euclidean";
+    const string bestKernelType = "uniform";
+    const string bestWindowType = "variable";
+    const u_int64_t bestWindowWidth = 2;
     auto [data, classes] = readTrainingDataForKNNModelFromFile("/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/data.log");
     normalize(data);
-    u_int32_t classCnt = 0;
-    for (const u_int32_t cl : classes)
-        classCnt = max(classCnt, cl);
-    vector<vector<u_int32_t>> targets = oneHotEncoding(classes, classCnt);
-    LeaveOneOut lvoModel;
-    lvoModel.fit(data, targets);
-    
-    // TEST (need normalize data)
-    vector<float> query = {601, 0.967794, 0.113525, 251.097, 63049.8, 502.418, 252424, -0.0076051, 3.18499e-10, -3.91268e-08, 82, 621, 441.167, 601, 20, 22.6925, 514.949, 34.301, 1176.56, 0.00741055, 4.72455e-06, 2.66138e-05, 1.2609, 57.3001, 26.5428, 25.2708, 24.0099,};
-    u_int32_t expectedClass = 1;
-    cout << "Test : actual(" << lvoModel.predict(query) << "), expected(" << expectedClass << ")\n";
+    u_int32_t cnt = 0;
+    for (u_int32_t i = 0; i < data.size(); i++) {
+        vector<float> data_test = data[i];
+        vector<vector<float>> data_train = data;
+        data_train.erase(data_train.begin() + i);
+        u_int32_t target_expected = classes[i];
+        vector<u_int32_t> target_train = classes;
+        target_train.erase(target_train.begin() + i);
+        u_int32_t pred = predictWithoutFit(data_train, target_train, data_test, bestDistType, bestKernelType, bestWindowType, bestWindowWidth);
+        if (target_expected != pred)
+            cout << i << ' ';
+        else
+            cnt++;
+    }
+    cout << '\n';
+    cout << float(cnt) / data.size() << '\n';
 }
 
 void workWithDefiniteFile(function<void(vector<LogFrame> &)> action) {
@@ -443,18 +465,8 @@ pair<bool, bool> getFlagsOfExistance(const string &path) {
 
 void workWithSeparatedFiles(function<void(vector<LogFrame> &)> action) {
     vector<string> paths {
-        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/dji_mavic_air/handshake-work-goodbye.pcm/frames_parser.log",
-        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/dji_mavic_air/handshake-work-goodbye.pcm/frames_phy.log",
-        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/dji_tello/18_01_45 2427MHz 23312.5KHz.pcm/frames_parser.log",
-        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/dji_tello/18_01_45 2427MHz 23312.5KHz.pcm/frames_phy.log",
-        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/syma_x5_sw/10_24_27 2439.346405MHz 93250.000000KHz.pcm/frames_parser.log",
-        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/syma_x5_sw/10_24_27 2439.346405MHz 93250.000000KHz.pcm/frames_phy.log",
-        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/syma_x5_uw/10_31_11 2439.346405MHz 93250.000000KHz.pcm/frames_parser.log",
-        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/syma_x5_uw/10_31_11 2439.346405MHz 93250.000000KHz.pcm/frames_phy.log",
-        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/wltoys_q242/10_39_38 2439.346405MHz 93250.000000KHz(Video).pcm/frames_parser.log",
-        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/wltoys_q242/10_39_38 2439.346405MHz 93250.000000KHz(Video).pcm/frames_phy.log",
-        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/xiaomi_mi_drone_4k/13_40_03 5765.117978MHz 13321.428571KHz.pcm/frames_parser.log",
-        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/part2/xiaomi_mi_drone_4k/13_40_03 5765.117978MHz 13321.428571KHz.pcm/frames_phy.log"
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/droidcam_voip/frames_parser.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/droidcam_voip/frames_phy.log"
     };
     vector<LogFrame> frames;
     map<u_int64_t, LogFrame> frameByInd;

@@ -73,19 +73,20 @@ float calcFscore(const vector<vector<u_int64_t>>& cm) {
 
 float nadarayWatson(const vector<vector<float>>& data,
                     const vector<u_int32_t>& targets,
-                    float h,
+                    const u_int64_t h,
                     const vector<float>& query,
-                    function<float(const vector<float>&, const vector<float>&)> dist,
-                    function<float(float)> kernel) {
+                    function<float(const vector<float>&, const vector<float>&)> distF,
+                    function<float(float)> kernelF,
+                    const string windType) {
     vector<pair<float, u_int64_t>> dists;
-    for (u_int64_t i = 0; i < data.size(); i++) {
-        float d = dist(query, data[i]);
-        dists.emplace_back(d, i);
-    }
-    if (abs(h) < EPS) {
+    for (u_int64_t i = 0; i < data.size(); i++)
+        dists.emplace_back(distF(query, data[i]), i);
+    sort(dists.begin(), dists.end(), [](auto a, auto b){ return a.first < b.first; });
+    float windWidth = windType == "fixed" ? float(h) : dists[h].first;
+    if (abs(windWidth) < EPS) {
         float sum = 0;
         u_int64_t cnt = 0;
-        if (data[dists[0].first] == query) {
+        if (data[dists[0].second] == query) {
             for (u_int64_t i = 0; i < data.size(); i++)
                 if (data[i] == query) {
                     sum += targets[i];
@@ -100,8 +101,8 @@ float nadarayWatson(const vector<vector<float>>& data,
     }
     float kernel_sum_with_classes = 0, kernel_sum = 0;
     for (const auto &p : dists) {
-        float kernel_v = kernel(p.first / h);
-        kernel_sum_with_classes += kernel_v * targets[p.first];
+        float kernel_v = kernelF(p.first / windWidth);
+        kernel_sum_with_classes += kernel_v * targets[p.second];
         kernel_sum += kernel_v;
     }
     if (isnan(kernel_sum_with_classes) || isnan(kernel_sum) || kernel_sum < EPS) {
@@ -114,48 +115,21 @@ float nadarayWatson(const vector<vector<float>>& data,
 }
 
 vector<vector<u_int64_t>> regression(const vector<vector<float>>& data,
-                                    const vector<vector<u_int32_t>>& targets,
+                                    const vector<u_int32_t>& targets,
                                     function<float(const vector<float>&, const vector<float>&)> distF,
                                     function<float(float)> kernelF,
                                     const string windType,
                                     const u_int64_t wind) {
-    vector<vector<u_int64_t>> CM(targets.size(), vector<u_int64_t>(targets.size(), 0));
+    u_int32_t targets_cnt = *max_element(targets.begin(), targets.end()) + 1;
+    vector<vector<u_int64_t>> CM(targets_cnt, vector<u_int64_t>(targets_cnt, 0));
     for (int i = 0; i < data.size(); i++) {
         vector<vector<float>> data_train(data);
         vector<float> data_test = data_train[i];
         data_train.erase(data_train.begin() + i);
-        vector<float> predictions;
-        for (int j = 0; j < targets.size(); j++) {
-            vector<u_int32_t> targets_train = targets[j];
-            targets_train.erase(targets_train.begin() + i);
-            float h;
-            if (windType == "fixed")
-                h = wind;
-            else {
-                vector<pair<float, int>> dists;
-                for (int k = 0; k < targets_train.size(); k++)
-                    dists.emplace_back(distF(data_test, data_train[k]), k);
-                sort(dists.begin(), dists.end(), [](auto a, auto b){ return a.first < b.first; });
-                h = dists[wind].first;
-            }
-            
-            float pred = nadarayWatson(data_train, targets_train, h, data_test, distF, kernelF);
-            predictions.push_back(pred);
-        }
-        u_int32_t max = 0;
-        u_int64_t real = 0;
-        for (int k = 0; k < targets.size(); k++)
-            if (targets[k][i] > max) {
-                max = targets[k][i];
-                real = k;
-            }
-        float tmp_max = 0.0;
-        u_int64_t pred = 0;
-        for (int k = 0; k < predictions.size(); k++)
-            if (predictions[k] > tmp_max) {
-                tmp_max = predictions[k];
-                pred = k;
-            }
+        vector<u_int32_t> targets_train(targets);
+        u_int32_t real = targets_train[i];
+        targets_train.erase(targets_train.begin() + i);
+        u_int32_t pred = round(nadarayWatson(data_train, targets_train, wind, data_test, distF, kernelF, windType));
         CM[pred][real]++;
     }
     return CM;
@@ -184,7 +158,20 @@ vector<vector<u_int32_t>> oneHotEncoding(const vector<u_int32_t> &classes, const
     return result;
 }
 
-void LeaveOneOut::fit(const vector<vector<float>> &data, const vector<vector<u_int32_t>> &targets) {
+u_int32_t predictWithoutFit(const vector<vector<float>> &data,
+                            const vector<uint32_t> &targets,
+                            const vector<float> &query,
+                            const string bestDistType,
+                            const string bestKernelType,
+                            const string bestWindowType,
+                            const u_int64_t bestWindowWidth) {
+    function<float(const vector<float>&, const vector<float>&)> distF = [dt = bestDistType](auto a, auto b) { return dist(a, b, dt); };
+    function<float(float)> kernelF = [kt = bestKernelType](auto x) { return kernel(x, kt); };
+    return round(nadarayWatson(data, targets, bestWindowWidth, query, distF, kernelF, bestWindowType));;
+}
+
+
+void LeaveOneOut::fit(const vector<vector<float>> &data, const vector<u_int32_t> &targets) {
     this->data = data;
     this->targets = targets;
     bestFscore = 0.0;
@@ -200,14 +187,14 @@ void LeaveOneOut::fit(const vector<vector<float>> &data, const vector<vector<u_i
             float R_D = 0.0;
             for (const auto &a : data)
                 for (const auto &b : data) {
-                    float d = dist(a, b, windType);
+                    float d = dist(a, b, distType);
                     R_D = max(R_D, d);
                 }
             float R_D_div = R_D / sqrtD;
             for (u_int64_t i = 1; i < int(ceil(sqrtD)); i++)
                 windows.emplace_back(i * u_int64_t(ceil(R_D_div)));
         } else
-            for (u_int64_t i = 1; i < int(ceil(sqrtD)); i++)
+            for (u_int64_t i = 2; i < int(ceil(sqrtD)); i++)
                 windows.emplace_back(i);
         for (const u_int64_t wind : windows) {
             function<float(const vector<float>&, const vector<float>&)> distF = [dt = distType](auto a, auto b) { return dist(a, b, dt); };
@@ -222,8 +209,8 @@ void LeaveOneOut::fit(const vector<vector<float>> &data, const vector<vector<u_i
                 bestFscore = fscore;
                 bestDistType = distType;
                 bestKernelType = kernelType;
-                bestWindowWidth = wind;
                 bestWindowType = windType;
+                bestWindowWidth = wind;
             }
         }
     }
@@ -239,31 +226,5 @@ void LeaveOneOut::fit(const vector<vector<float>> &data, const vector<vector<u_i
 }
 
 u_int32_t LeaveOneOut::predict(const vector<float>& query) {
-    function<float(const vector<float>&, const vector<float>&)> distF = [dt = bestDistType](auto a, auto b) { return dist(a, b, dt); };
-    function<float(float)> kernelF = [kt = bestKernelType](auto x) { return kernel(x, kt); };
-    vector<float> predictions;
-    for (int j = 0; j < targets.size(); j++) {
-        vector<u_int32_t> targets_train = targets[j];
-        float h;
-        if (bestWindowType == "fixed")
-            h = bestWindowWidth;
-        else {
-            vector<pair<float, int>> dists;
-            for (int k = 0; k < targets_train.size(); k++)
-                dists.emplace_back(distF(query, data[k]), k);
-            sort(dists.begin(), dists.end(), [](auto a, auto b){ return a.first < b.first; });
-            h = dists[bestWindowWidth].first;
-        }
-        
-        float pred = nadarayWatson(data, targets_train, h, query, distF, kernelF);
-        predictions.push_back(pred);
-    }
-    float max = 0.0;
-    u_int32_t pred = 0;
-    for (int k = 0; k < predictions.size(); k++)
-        if (predictions[k] > max) {
-            max = predictions[k];
-            pred = k;
-        }
-    return pred + 1;
+    return predictWithoutFit(data, targets, query, bestDistType, bestKernelType, bestWindowType, bestWindowWidth);
 }

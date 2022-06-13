@@ -14,7 +14,8 @@ int main(int argc, const char * argv[]) {
 //    workWithDefiniteFile(getStatistics);
 //    workWithAllFiles(classifyAllMacFromFrames);
 //    workWithAllFiles(workWithDataFrames);
-    workWithSeparatedFiles(excludeDataForTrainingSet);
-//    workWithModel();
+//    workWithSeparatedFiles(excludeDataForTrainingSet);
+//    LeaveOneOut model = trainModel();
+    testModel();
     return 0;
 }

@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <numeric>
 #include <tuple>
+#include <cassert>
 #include "LogFrame.hpp"
 #include "Statistics.hpp"
 #include "Utils.hpp"
@@ -111,9 +112,21 @@ pair<bool, bool> getFlagsOfExistance(const string &path);
  */
 void workWithSeparatedFiles(function<void(vector<LogFrame> &)> action);
 /**
- * Train model and predict something.
+ * Train model with training data.
+ *
+ * @return LeaveOneOut model.
  */
-void workWithModel();
+LeaveOneOut trainModel();
+/**
+ * Train model and predict something.
+ *
+ * @param query of features for test.
+ */
+void workWithModel(vector<float> &query);
+/**
+ * Test our trained model.
+ */
+void testModel();
 
 class Packet {
 private:
@@ -146,6 +159,7 @@ map<u_int64_t, vector<Packet>> collectPacketsByTA(const vector<LogFrame> &frames
  * @return vector of features.
  */
 vector<float> excludeFeaturesFromPackets(const vector<Packet> &packets);
+
 class StandardFeatures {
 public:
     float standartDeviation;
