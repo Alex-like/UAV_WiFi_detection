@@ -159,6 +159,10 @@ map<u_int64_t, vector<Packet>> collectPacketsByTA(const vector<LogFrame> &frames
  * @return vector of features.
  */
 vector<float> excludeFeaturesFromPackets(const vector<Packet> &packets);
+/**
+ * Make a report for work.
+ */
+void reportTaskWriter();
 
 class StandardFeatures {
 public:

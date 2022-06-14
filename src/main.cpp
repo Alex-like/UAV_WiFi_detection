@@ -16,6 +16,7 @@ int main(int argc, const char * argv[]) {
 //    workWithAllFiles(workWithDataFrames);
 //    workWithSeparatedFiles(excludeDataForTrainingSet);
 //    LeaveOneOut model = trainModel();
-    testModel();
+//    testModel();
+    reportTaskWriter();
     return 0;
 }

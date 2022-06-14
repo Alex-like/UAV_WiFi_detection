@@ -507,3 +507,65 @@ void workWithSeparatedFiles(function<void(vector<LogFrame> &)> action) {
     }
 }
 
+void reportTaskWriter() {
+    LeaveOneOut model = trainModel();
+    vector<string> paths {
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/3dr_solo/dsss/frames.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/3dr_solo/wifi-ofdm-20/frames.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/fimi_x8_me_2020/1wifi_fc_5825000000_fs_12000000.pcm.result/frames.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/fimi_x8_me_2020/2wifi_fc_5825000000_fs_12000000.pcm.result/frames.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/fimi_x8_me_2020/wifi_fc_5825000000_fs_12000000.pcm.result/frames.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/hubsan_zino_2/Vega_2021-03-30_15-13-49-781_1_5785000000_10000000_11764706.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/nelk_b6/NELK_B6_Downlink_5220.213483MHz_46625.000000KHz.pcm.log/frames.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/parrot_bebop2/on_the_ground_gps-dsss/frames.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/parrot_bebop2/on_the_ground_gps-ofdm-20/frames.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/skydio2/3_Подключение_App,_калибровка,_попытка_полета-Unsafe_space/frames.log",
+        "/Users/alexshchelochkov/Desktop/STC/UAV_WiFi_detection/data/drones/skydio2/4_Взлет_и_посадка_в_офисе/frames.log"
+    };
+    vector<LogFrame> frames;
+    for (const string &path : paths) {
+        cout << path << '\n';
+        readFromFile(path, frames);
+        // collect transmitions to packets grouped by TA
+        map<u_int64_t, vector<Packet>> D = collectPacketsByTA(frames);
+        // cut first "MTU" packets from begin and save not more than 20 packets
+        map<u_int64_t, u_int32_t> packets_cnt;
+        map<u_int64_t, vector<Packet>> SM;
+        for (auto &p : D) {
+            if (p.second.size() < 20) {
+                packets_cnt[p.first] = p.second.size();
+                SM[p.first] = p.second;
+            } else {
+                int left = 0;
+                for (; left < p.second.size() - 1 && p.second[left].getSize() <= p.second[left + 1].getSize() && p.second.size() - left > 20; left++);
+                int right = min(left + 20, int(p.second.size()));
+                SM[p.first] = vector<Packet>();
+                packets_cnt[p.first] = right - left;
+                for (int i = left; i < right; i++)
+                    SM[p.first].emplace_back(p.second[i]);
+            }
+        }
+        // create Features DataSet
+        map<u_int64_t, vector<float>> DS;
+        for (auto &p : SM) {
+            if (p.second.size() < 8)
+                continue;
+            vector<float> curFeatures = excludeFeaturesFromPackets(p.second);
+            if (count_if(curFeatures.begin(), curFeatures.end(), [](float x){ return isnan(x); }) > 0)
+                continue;
+            DS[p.first] = curFeatures;
+        }
+        // Print MAC: predicted class
+        for (auto &p : DS) {
+            cout << hexToMAC(decToHex(p.first)) << " : prdicted class " << model.predict(p.second) << '\n';
+            cout << hexToMAC(decToHex(p.first)) << " : packets amount needed to make prediction " << packets_cnt[p.first] << '\n';
+            cout << hexToMAC(decToHex(p.first)) << " : MTU size " << int(p.second[0] / p.second[1]) << '\n';
+            u_int32_t pivots_cnt = 0;
+            for (auto &packet : SM[p.first])
+                pivots_cnt += packet.getSize() == int(p.second[0]) ? 1 : 0;
+            cout << hexToMAC(decToHex(p.first)) << " : pivots count " << pivots_cnt << '\n';
+            cout << endl;
+        }
+        frames.clear();
+    }
+}
